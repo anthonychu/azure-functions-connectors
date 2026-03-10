@@ -16,19 +16,20 @@ Connector trigger bindings for Azure Functions (Python). Poll Azure managed conn
 
 ```python
 import azure.functions as func
-import azure.functions_connectors as ct
+import azure.functions_connectors as fc
 
 app = func.FunctionApp()
 
-@ct.generic_connection_trigger(
+@fc.generic_connection_trigger(
+    app,
     connection_id="%OFFICE365_CONNECTION_ID%",
     trigger_path="/Mail/OnNewEmail",
     trigger_queries={"folderPath": "Inbox"},
 )
 async def on_new_email(item: dict):
-    print(f"New email: {item['subject']}")
+    print(f"New email from {item['From']}: {item['Subject']}")
 
-ct.register_connector_triggers(app)
+fc.register_connector_triggers(app)
 ```
 
 ## Installation
