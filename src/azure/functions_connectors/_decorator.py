@@ -63,6 +63,10 @@ def generic_connection_trigger(
             user_func.__name__,
             registration.instance_id,
         )
+        print(
+            f"[azure.functions_connectors] Registered trigger: "
+            f"{registration.config.trigger_path} → {user_func.__name__}"
+        )
 
         return user_func
 
