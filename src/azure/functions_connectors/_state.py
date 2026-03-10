@@ -6,7 +6,7 @@ import json
 import os
 
 from azure.core.exceptions import HttpResponseError, ResourceExistsError, ResourceNotFoundError
-from azure.storage.blob.aio import BlobServiceClient
+from azure.storage.blob.aio import BlobLeaseClient, BlobServiceClient
 
 from ._models import TriggerState
 
@@ -60,13 +60,16 @@ async def read_state(instance_id: str) -> TriggerState | None:
         return None
 
 
-async def save_state(instance_id: str, state: TriggerState) -> None:
+async def save_state(instance_id: str, state: TriggerState, lease_id: str | None = None) -> None:
     """Persist trigger state as JSON to blob storage."""
     await _ensure_container()
     client = _get_blob_service_client()
     blob = client.get_blob_client(_CONTAINER_NAME, _blob_path(instance_id))
     payload = json.dumps(state.to_dict())
-    await blob.upload_blob(payload, overwrite=True)
+    kwargs: dict = {"overwrite": True}
+    if lease_id:
+        kwargs["lease"] = BlobLeaseClient(blob, lease_id=lease_id)
+    await blob.upload_blob(payload, **kwargs)
 
 
 async def delete_state(instance_id: str) -> None:
@@ -111,6 +114,16 @@ async def acquire_trigger_lease(
     except HttpResponseError as e:
         if e.status_code == 409:  # Already leased
             return None
+        if e.status_code == 404:
+            # Blob doesn't exist yet — seed it, then lease.
+            await blob.upload_blob(b"{}", overwrite=True)
+            try:
+                lease = await blob.acquire_lease(lease_duration=lease_duration)
+                return lease.id
+            except HttpResponseError as e2:
+                if e2.status_code == 409:
+                    return None
+                raise
         raise  # Unexpected error — propagate
     except ResourceNotFoundError:
         # Blob doesn't exist yet — seed it, then lease.
@@ -123,5 +136,5 @@ async def release_trigger_lease(instance_id: str, lease_id: str) -> None:
     """Release a previously acquired lease."""
     client = _get_blob_service_client()
     blob = client.get_blob_client(_CONTAINER_NAME, _blob_path(instance_id))
-    lease = blob.get_blob_lease_client(lease_id)  # type: ignore[arg-type]
+    lease = BlobLeaseClient(blob, lease_id=lease_id)
     await lease.release()

@@ -24,6 +24,7 @@ def register_connector_triggers(
     global _registration_done
     _registration_done = True
 
+    # -- Timer: polls connectors, enqueues items ----
     @app.function_name("ConnectorTriggerPoller")
     @app.timer_trigger(
         schedule=poll_interval,
@@ -37,13 +38,14 @@ def register_connector_triggers(
             _cleanup_done = True
         await poll_all_triggers()
 
+    # -- Queue: processes individual items ----
     @app.function_name("ConnectorTriggerProcessor")
     @app.queue_trigger(
         arg_name="msg",
         queue_name="connector-trigger-items",
         connection="AzureWebJobsStorage",
     )
-    async def connector_trigger_processor(msg: func.QueueMessage) -> None:
+    async def connector_trigger_processor(msg: func.QueueMessage) -> None:  # noqa: ARG001
         await process_queue_message(msg.get_body().decode("utf-8"))
 
 

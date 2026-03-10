@@ -151,7 +151,7 @@ async def _poll_single_trigger(trigger: TriggerRegistration) -> None:
             )
 
         # -- save state ------------------------------------------------------
-        await save_state(instance_id, new_state)
+        await save_state(instance_id, new_state, lease_id=lease_id)
 
     except Exception:
         logger.warning("Error polling trigger %s", instance_id, exc_info=True)

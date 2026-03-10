@@ -4,8 +4,8 @@
 
 1. Clone the repo
 2. Create a virtual environment: `python -m venv .venv && source .venv/bin/activate`
-3. Install in editable mode: `pip install -e ".[dev]"`
-4. Run tests: `pytest tests/`
+3. Install in editable mode: `pip install -e .`
+4. Run tests: `pytest tests/` (when tests are added)
 
 ## Project Structure
 
