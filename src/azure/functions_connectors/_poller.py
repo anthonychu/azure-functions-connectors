@@ -34,10 +34,21 @@ MAX_QUEUE_MESSAGE_BYTES = 48 * 1024  # 48KB, leaving margin for base64 encoding 
 
 
 async def poll_all_triggers() -> None:
-    """Poll every registered trigger concurrently (max 5 at a time)."""
+    """Poll every unique trigger concurrently (max 5 at a time).
+
+    Multiple handlers on the same trigger path share one poll — dedup by instance_id.
+    """
     triggers = get_registered_triggers()
     if not triggers:
         return
+
+    # Deduplicate: only poll each unique instance_id once
+    seen: set[str] = set()
+    unique_triggers: list[TriggerRegistration] = []
+    for t in triggers:
+        if t.instance_id not in seen:
+            seen.add(t.instance_id)
+            unique_triggers.append(t)
 
     semaphore = asyncio.Semaphore(_MAX_CONCURRENCY)
 
@@ -45,7 +56,7 @@ async def poll_all_triggers() -> None:
         async with semaphore:
             await _poll_single_trigger(trigger)
 
-    await asyncio.gather(*[_bounded(t) for t in triggers])
+    await asyncio.gather(*[_bounded(t) for t in unique_triggers])
 
 
 async def _poll_single_trigger(trigger: TriggerRegistration) -> None:

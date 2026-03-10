@@ -14,7 +14,7 @@ from ._models import TriggerConfig, TriggerRegistration
 logger = logging.getLogger(__name__)
 
 _registered_triggers: list[TriggerRegistration] = []
-_handler_registry: dict[str, Callable] = {}  # instance_id → handler
+_handler_registry: dict[str, list[Callable]] = {}  # instance_id → [handlers]
 _functions_registered = False  # True once timer+queue functions are registered
 
 
@@ -50,7 +50,7 @@ def generic_connection_trigger(
         )
         registration = TriggerRegistration(config=config, handler=user_func)
         _registered_triggers.append(registration)
-        _handler_registry[registration.instance_id] = user_func
+        _handler_registry.setdefault(registration.instance_id, []).append(user_func)
 
         # On FIRST decorator call only, register timer + queue on app
         if not _functions_registered:
@@ -125,17 +125,18 @@ def _register_functions(app: func.FunctionApp) -> None:
                 logger.error("Missing item for %s", instance_id)
                 return
 
-        handler = _handler_registry.get(instance_id)
-        if handler is None:
-            logger.warning("No handler for %s, dropping", instance_id)
+        handlers = _handler_registry.get(instance_id, [])
+        if not handlers:
+            logger.warning("No handlers for %s, dropping", instance_id)
             return
 
-        if asyncio.iscoroutinefunction(handler):
-            await handler(item)
-        else:
-            handler(item)
+        for handler in handlers:
+            if asyncio.iscoroutinefunction(handler):
+                await handler(item)
+            else:
+                handler(item)
 
-        logger.info("Processed item for %s", instance_id)
+        logger.info("Processed item for %s (%d handler(s))", instance_id, len(handlers))
 
 
 def get_registered_triggers() -> list[TriggerRegistration]:
@@ -143,6 +144,6 @@ def get_registered_triggers() -> list[TriggerRegistration]:
     return _registered_triggers
 
 
-def get_handler(instance_id: str) -> Callable | None:
-    """Return the handler for the given instance_id, or None."""
-    return _handler_registry.get(instance_id)
+def get_handlers(instance_id: str) -> list[Callable]:
+    """Return all handlers for the given instance_id."""
+    return _handler_registry.get(instance_id, [])
