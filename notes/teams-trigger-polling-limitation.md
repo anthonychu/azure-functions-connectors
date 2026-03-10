@@ -93,9 +93,9 @@ Since the connector's polling trigger is broken server-side, alternatives are:
 ### Recommendation
 
 - Teams support in the SDK focuses on the **client** (21 action methods) which all work correctly
-- Teams trigger definitions remain in the SDK for when the connector bug is fixed
-- Document the timer + client workaround as the recommended approach for Teams triggers
-- The trigger code IS correct — the bug is in the Teams connector's `dynamicInvoke` response pipeline
+- Teams trigger methods have been removed from the SDK since they cannot work
+- The timer + client workaround is documented as the recommended approach
+- Trigger methods can be re-added if the connector bug is fixed
 
 ### Investigation Notes (2026-03-10)
 

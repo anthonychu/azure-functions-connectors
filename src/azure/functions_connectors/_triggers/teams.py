@@ -1,10 +1,15 @@
-"""Strongly-typed Teams connector triggers and item models."""
+"""Teams connector item models and client factory.
+
+Note: Teams polling triggers are NOT supported due to a connector-side bug
+(502 "Unable to compute iso trigger state" when items are found).
+Only the Teams client (actions) is available. See
+notes/teams-trigger-polling-limitation.md for details.
+"""
 
 from __future__ import annotations
 
-from typing import Callable, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
-from .._env import resolve_value
 from .._models import ConnectorItem
 
 if TYPE_CHECKING:
@@ -102,7 +107,12 @@ class TeamsChannel(ConnectorItem):
 
 
 class TeamsTrigers:
-    """Strongly-typed Teams trigger decorators and client factory."""
+    """Teams client factory.
+
+    Note: Teams polling triggers are not available due to a connector-side
+    bug. Use ``get_client()`` to access Teams actions (messages, channels,
+    teams, chats, tags, members, meetings).
+    """
 
     def __init__(self, parent: FunctionsConnectors) -> None:
         self._parent = parent
@@ -112,41 +122,3 @@ class TeamsTrigers:
         from .._clients.teams import TeamsClient
 
         return TeamsClient(ConnectorClient(connection_id))
-
-    def new_channel_message_trigger(
-        self,
-        connection_id: str,
-        team_id: str,
-        channel_id: str,
-    ) -> Callable:
-        return self._parent.generic_trigger(
-            connection_id=connection_id,
-            trigger_path=f"/trigger/beta/teams/{resolve_value(team_id)}/channels/{resolve_value(channel_id)}/messages",
-            trigger_queries={},
-        )
-
-    def channel_mention_trigger(
-        self,
-        connection_id: str,
-        team_id: str,
-        channel_id: str,
-    ) -> Callable:
-        return self._parent.generic_trigger(
-            connection_id=connection_id,
-            trigger_path=f"/trigger/beta/teams/{resolve_value(team_id)}/channels/{resolve_value(channel_id)}/messages_mentioningme",
-            trigger_queries={},
-        )
-
-    def member_added_trigger(self, connection_id: str) -> Callable:
-        return self._parent.generic_trigger(
-            connection_id=connection_id,
-            trigger_path="/trigger/v1.0/groups/delta",
-            trigger_queries={},
-        )
-
-    def member_removed_trigger(self, connection_id: str) -> Callable:
-        return self._parent.generic_trigger(
-            connection_id=connection_id,
-            trigger_path="/trigger/v1.0/groups/removal",
-            trigger_queries={},
-        )

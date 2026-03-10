@@ -1,6 +1,10 @@
-# Sample: Microsoft Teams Triggers & Client
+# Sample: Microsoft Teams Client
 
-This sample demonstrates Teams triggers (channel messages, @mentions) and the typed client API.
+This sample demonstrates using the Teams client API on a timer to periodically
+check for new channel messages.
+
+> **Note:** Teams polling triggers are not currently supported due to a
+> connector-side bug. This sample uses a timer + client workaround instead.
 
 ## Prerequisites
 
@@ -17,7 +21,7 @@ This sample demonstrates Teams triggers (channel messages, @mentions) and the ty
 
 To find your team and channel IDs, use the Teams client:
 ```python
-teams = connectors.teams.get_client(connection_id="...")
-my_teams = await teams.list_teams()  # get team IDs
-channels = await teams.list_channels(team_id="...")  # get channel IDs
+client = connectors.teams.get_client(connection_id="...")
+my_teams = await client.list_teams()  # get team IDs
+channels = await client.list_channels(team_id="...")  # get channel IDs
 ```
