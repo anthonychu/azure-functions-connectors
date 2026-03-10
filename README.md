@@ -95,11 +95,7 @@ State (cursor, backoff) is persisted in **blob storage** so polling resumes acro
 
 ### Registration
 
-```python
-fc.register_connector_triggers(app)
-```
-
-Call this after all `@generic_connection_trigger` decorators. It validates that triggers are registered and is required for the atexit safety check.
+No explicit registration call needed — `FunctionsConnectors(app)` handles everything.
 
 ## Common Trigger Paths
 

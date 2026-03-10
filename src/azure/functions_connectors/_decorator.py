@@ -117,7 +117,6 @@ class FunctionsConnectors:
 
     def _register_queue_function(self, user_func: Callable, queue_name: str) -> None:
         from ._poller import retrieve_item_blob
-        import inspect
 
         func_name = user_func.__name__
 

@@ -193,7 +193,12 @@ async def _store_item_blob(blob_path: str, item: dict) -> None:
 
 
 async def retrieve_item_blob(blob_path: str) -> dict:
-    """Retrieve an oversized item from blob storage and delete after reading."""
+    """Retrieve an oversized item from blob storage.
+
+    The blob is NOT deleted here — it will be cleaned up after the handler
+    succeeds. If the handler fails and the queue message retries, the blob
+    must still be available.
+    """
     conn_str = os.environ.get("AzureWebJobsStorage")
     if not conn_str:
         raise ValueError("AzureWebJobsStorage environment variable is not set")
@@ -203,9 +208,7 @@ async def retrieve_item_blob(blob_path: str) -> dict:
         blob_client = blob_service.get_blob_client(_CONTAINER_NAME, blob_path)
         download = await blob_client.download_blob()
         raw = await download.readall()
-        item = json.loads(raw)
-        await blob_client.delete_blob()
-        return item
+        return json.loads(raw)
     finally:
         await blob_service.close()
 
