@@ -1,5 +1,25 @@
 # Office 365 Connector API Documentation
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Triggers](#triggers)
+  - [new_email_trigger](#new_email_trigger)
+  - [mention_email_trigger](#mention_email_trigger)
+  - [shared_mailbox_email_trigger](#shared_mailbox_email_trigger)
+  - [flagged_email_trigger](#flagged_email_trigger)
+  - [new_event_trigger](#new_event_trigger)
+  - [upcoming_event_trigger](#upcoming_event_trigger)
+  - [event_changed_trigger](#event_changed_trigger)
+- [Typed Models](#typed-models)
+  - [Office365Email](#office365email)
+  - [Office365Event](#office365event)
+- [Client](#client)
+  - [Email Actions](#email-actions) — send, get, reply, forward, move, flag, delete, draft, attachments
+  - [Calendar Actions](#calendar-actions) — get, create, update, delete, calendar view, rooms, meetings
+  - [Contact Actions](#contact-actions) — get, create, update, delete
+  - [Utility](#utility) — raw HTTP request, get calendars
+
 ## Overview
 
 The Office 365 connector provides:

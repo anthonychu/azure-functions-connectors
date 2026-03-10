@@ -1,5 +1,25 @@
 # Generic Connector APIs
 
+## Table of Contents
+
+- [Overview](#overview)
+- [FunctionsConnectors](#functionsconnectors)
+- [Generic Trigger](#generic-trigger)
+  - [Signature](#signature)
+  - [Parameters](#parameters)
+  - [How it works](#how-it-works)
+  - [Examples](#example-salesforce--sharepoint)
+  - [Type hints](#type-hints-for-handler-item)
+- [Generic Client](#generic-client)
+  - [ConnectorClient](#constructor-1)
+  - [invoke()](#invoke)
+  - [ConnectorError](#connectorerror)
+  - [Examples](#examples)
+- [ConnectorItem Base Class](#connectoritem-base-class)
+  - [Subclassing pattern](#subclassing-pattern)
+- [Architecture](#architecture)
+- [RBAC](#rbac)
+
 ## Overview
 
 The generic APIs are connector-agnostic and work with **any Azure managed connector** (Office 365, Salesforce, SharePoint, Dynamics, and 500+ others).  
