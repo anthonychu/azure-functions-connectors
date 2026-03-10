@@ -1,0 +1,5507 @@
+{
+  "basePath": "/apim/salesforce",
+  "definitions": {
+    "BlobDataSetsMetadata": {
+      "description": "Blob dataset metadata",
+      "properties": {
+        "displayName": {
+          "description": "Blob dataset display name",
+          "type": "string"
+        },
+        "source": {
+          "description": "Blob dataset source",
+          "type": "string"
+        },
+        "urlEncoding": {
+          "description": "Blob dataset url encoding",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "CheckJobResponse": {
+      "properties": {
+        "apexProcessingTime": {
+          "description": "APEX Processing Time",
+          "type": "number",
+          "x-ms-summary": "APEX Processing Time",
+          "x-ms-visibility": "advanced"
+        },
+        "apiActiveProcessingTime": {
+          "description": "API Active Processing Time",
+          "type": "number",
+          "x-ms-summary": "API Active Processing Time",
+          "x-ms-visibility": "advanced"
+        },
+        "apiVersion": {
+          "description": "API Version",
+          "format": "float",
+          "type": "number",
+          "x-ms-summary": "API Version",
+          "x-ms-visibility": "advanced"
+        },
+        "columnDelimiter": {
+          "description": "Column Delimiter",
+          "enum": [
+            "BACKQUOTE",
+            "CARET",
+            "COMMA",
+            "PIPE",
+            "SEMICOLON",
+            "TAB"
+          ],
+          "type": "string",
+          "x-ms-summary": "Column Delimiter",
+          "x-ms-visibility": "advanced"
+        },
+        "concurrencyMode": {
+          "description": "Concurrency Mode",
+          "enum": [
+            "Parallel",
+            "Serial"
+          ],
+          "type": "string",
+          "x-ms-summary": "Concurrency Mode",
+          "x-ms-visibility": "advanced"
+        },
+        "contentType": {
+          "description": "Content Type",
+          "type": "string",
+          "x-ms-summary": "Content Type",
+          "x-ms-visibility": "advanced"
+        },
+        "contentUrl": {
+          "description": "Content URL",
+          "type": "string",
+          "x-ms-summary": "Content URL",
+          "x-ms-visibility": "advanced"
+        },
+        "createdById": {
+          "description": "Created By ID",
+          "type": "string",
+          "x-ms-summary": "Created By ID",
+          "x-ms-visibility": "advanced"
+        },
+        "createdDate": {
+          "description": "Created Date",
+          "format": "date-time",
+          "type": "string",
+          "x-ms-summary": "Created Date",
+          "x-ms-visibility": "advanced"
+        },
+        "externalFieldName": {
+          "description": "External Field Name",
+          "type": "string",
+          "x-ms-summary": "External Field Name",
+          "x-ms-visibility": "advanced"
+        },
+        "id": {
+          "description": "ID",
+          "type": "string",
+          "x-ms-summary": "ID",
+          "x-ms-visibility": "advanced"
+        },
+        "jobType": {
+          "description": "Job Type",
+          "enum": [
+            "BigObjectInjest",
+            "Classic",
+            "V2Injest"
+          ],
+          "type": "string",
+          "x-ms-summary": "Job Type",
+          "x-ms-visibility": "advanced"
+        },
+        "lineEnding": {
+          "description": "Line Ending",
+          "enum": [
+            "LF",
+            "CRLF"
+          ],
+          "type": "string",
+          "x-ms-summary": "Line Ending",
+          "x-ms-visibility": "advanced"
+        },
+        "object": {
+          "description": "Object",
+          "type": "string",
+          "x-ms-summary": "Object"
+        },
+        "operation": {
+          "description": "Operation",
+          "enum": [
+            "insert",
+            "delete",
+            "update",
+            "upsert"
+          ],
+          "type": "string",
+          "x-ms-summary": "Operation"
+        },
+        "retries": {
+          "description": "Retries",
+          "type": "number",
+          "x-ms-summary": "Retries",
+          "x-ms-visibility": "advanced"
+        },
+        "state": {
+          "description": "State",
+          "enum": [
+            "Open",
+            "UploadComplete",
+            "Aborted",
+            "JobComplete",
+            "Failed"
+          ],
+          "type": "string",
+          "x-ms-summary": "State",
+          "x-ms-visibility": "advanced"
+        },
+        "systemModStamp": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "totalProcessingTime": {
+          "description": "Total Processing Time",
+          "type": "number",
+          "x-ms-summary": "Total Processing Time",
+          "x-ms-visibility": "advanced"
+        }
+      },
+      "type": "object"
+    },
+    "CloseJobRequest": {
+      "description": "",
+      "properties": {
+        "state": {
+          "description": "state",
+          "enum": [
+            "UploadComplete",
+            "Aborted"
+          ],
+          "type": "string",
+          "x-ms-summary": "state"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "type": "object"
+    },
+    "CreateJobParameters": {
+      "description": "Parameters for 'CreateJobV2' operation",
+      "properties": {
+        "columnDelimiter": {
+          "description": "The column delimiter used for CSV job data.",
+          "type": "string",
+          "x-ms-summary": "Column Delimiter"
+        },
+        "contentType": {
+          "description": "The content type for the job.",
+          "type": "string",
+          "x-ms-summary": "Content Type"
+        },
+        "externalIdFieldName": {
+          "description": "The external ID field in the object being updated. Only needed for upsert operations. Field values must also exist in CSV job data.",
+          "type": "string",
+          "x-ms-summary": "External ID Field Name"
+        },
+        "lineEnding": {
+          "description": "The line ending used for CSV job data, marking the end of a data row.",
+          "type": "string",
+          "x-ms-summary": "Line Ending"
+        },
+        "object": {
+          "description": "The object type for the data being processed.",
+          "type": "string",
+          "x-ms-dynamic-values": {
+            "operationId": "GetTables",
+            "parameters": {},
+            "value-collection": "value",
+            "value-path": "Name",
+            "value-title": "DisplayName"
+          },
+          "x-ms-summary": "Object"
+        },
+        "operation": {
+          "description": "The processing operation for the job.",
+          "enum": [
+            "insert",
+            "delete",
+            "update",
+            "upsert"
+          ],
+          "type": "string",
+          "x-ms-summary": "Operation"
+        }
+      },
+      "required": [
+        "object",
+        "operation"
+      ],
+      "type": "object"
+    },
+    "CreateJobRequest": {
+      "properties": {
+        "columnDelimiter": {
+          "description": "Column Delimiter",
+          "enum": [
+            "BACKQUOTE",
+            "CARET",
+            "COMMA",
+            "PIPE",
+            "SEMICOLON",
+            "TAB"
+          ],
+          "type": "string",
+          "x-ms-summary": "Column Delimiter",
+          "x-ms-visibility": "advanced"
+        },
+        "externalIdFieldName": {
+          "description": "External ID Field Name",
+          "type": "string",
+          "x-ms-summary": "External ID Field Name"
+        },
+        "lineEnding": {
+          "description": "Line Ending",
+          "enum": [
+            "LF",
+            "CRLF"
+          ],
+          "type": "string",
+          "x-ms-summary": "Line Ending",
+          "x-ms-visibility": "advanced"
+        },
+        "object": {
+          "description": "Object",
+          "type": "string",
+          "x-ms-dynamic-values": {
+            "operationId": "GetTables",
+            "value-collection": "value",
+            "value-path": "Name",
+            "value-title": "DisplayName"
+          },
+          "x-ms-summary": "Object"
+        },
+        "operation": {
+          "description": "Operation",
+          "enum": [
+            "insert",
+            "delete",
+            "update",
+            "upsert"
+          ],
+          "type": "string",
+          "x-ms-summary": "Operation"
+        }
+      },
+      "required": [
+        "object",
+        "operation"
+      ],
+      "type": "object"
+    },
+    "CreateJobResponse": {
+      "description": "Output for 'CreateJobV2' operation",
+      "properties": {
+        "apiVersion": {
+          "description": "The API version that the job was created in.",
+          "format": "float",
+          "type": "number",
+          "x-ms-summary": "API Version"
+        },
+        "columnDelimiter": {
+          "description": "The column delimiter used for CSV job data.",
+          "type": "string",
+          "x-ms-summary": "Column Delimiter"
+        },
+        "concurrencyMode": {
+          "description": "The concurrency mode for the job.",
+          "type": "string",
+          "x-ms-summary": "Concurrency Mode"
+        },
+        "contentType": {
+          "description": "The content type for the job.",
+          "type": "string",
+          "x-ms-summary": "Content Type"
+        },
+        "contentUrl": {
+          "description": "The URL to use for Upload Job Data requests for this job. Only valid if the job is in 'Open' state.",
+          "type": "string",
+          "x-ms-summary": "Content Url"
+        },
+        "createdById": {
+          "description": "The ID of the user who created the job.",
+          "type": "string",
+          "x-ms-summary": "Created By Id"
+        },
+        "createdDate": {
+          "description": "The date and time in the UTC time zone when the job was created.",
+          "format": "date-time",
+          "type": "string",
+          "x-ms-summary": "Created Date"
+        },
+        "externalIdFieldName": {
+          "description": "The external ID field in the object being updated. Only needed for upsert operations. Field values must also exist in CSV job data.",
+          "type": "string",
+          "x-ms-summary": "External ID Field Name"
+        },
+        "id": {
+          "description": "Unique ID for this job.",
+          "type": "string",
+          "x-ms-summary": "Id"
+        },
+        "jobType": {
+          "description": "The job’s type.",
+          "type": "string",
+          "x-ms-summary": "Job Type"
+        },
+        "lineEnding": {
+          "description": "The line ending used for CSV job data, marking the end of a data row.",
+          "type": "string",
+          "x-ms-summary": "Line Ending"
+        },
+        "object": {
+          "description": "The object type for the data being processed.",
+          "type": "string",
+          "x-ms-summary": "Object"
+        },
+        "operation": {
+          "description": "The processing operation for the job.",
+          "type": "string",
+          "x-ms-summary": "Operation"
+        },
+        "state": {
+          "description": "The current state of processing for the job.",
+          "type": "string",
+          "x-ms-summary": "State"
+        },
+        "systemModstamp": {
+          "description": "Date and time in the UTC time zone when the job finished.",
+          "format": "date-time",
+          "type": "string",
+          "x-ms-summary": "System Modstamp"
+        }
+      },
+      "type": "object"
+    },
+    "DataSet": {
+      "description": "Dataset",
+      "properties": {
+        "DisplayName": {
+          "description": "Dataset display name",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Dataset name",
+          "type": "string"
+        },
+        "query": {
+          "description": "Pass-through Native Queries",
+          "items": {
+            "$ref": "#/definitions/PassThroughNativeQuery"
+          },
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "DataSetsList": {
+      "description": "List of datasets",
+      "properties": {
+        "value": {
+          "description": "List of datasets",
+          "items": {
+            "$ref": "#/definitions/DataSet"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "DataSetsMetadata": {
+      "description": "Dataset metadata",
+      "properties": {
+        "blob": {
+          "$ref": "#/definitions/BlobDataSetsMetadata"
+        },
+        "tabular": {
+          "$ref": "#/definitions/TabularDataSetsMetadata"
+        }
+      },
+      "type": "object"
+    },
+    "ExecuteSoqlQueryParameters": {
+      "description": "Input body for Execute Soql Query operation",
+      "properties": {
+        "parameters": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "SOQL Query dynamic parameters. Key is parameter name (without '@' at sign), value is parameter value.",
+          "type": "object",
+          "x-ms-editor": "dictionary",
+          "x-ms-summary": "Query parameters"
+        },
+        "query": {
+          "description": "SOQL Query text. Dynamic parameters can be specified using '@paramName' syntax.",
+          "type": "string",
+          "x-ms-summary": "SOQL Query"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    },
+    "ExternalIdField": {
+      "description": "Represents an external ID field.",
+      "properties": {
+        "DisplayName": {
+          "description": "Display name of the external ID field.",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Name of the external ID field, used at runtime.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ExternalIdFieldsList": {
+      "description": "Represents a list of external ID fields.",
+      "properties": {
+        "value": {
+          "description": "List of external ID fields.",
+          "items": {
+            "$ref": "#/definitions/ExternalIdField"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "GetAllJobsResponse": {
+      "properties": {
+        "done": {
+          "description": "Done",
+          "type": "boolean",
+          "x-ms-summary": "Done"
+        },
+        "nextRecordUrl": {
+          "description": "Next Record URL",
+          "type": "string",
+          "x-ms-summary": "Next Recored URL"
+        },
+        "records": {
+          "items": {
+            "$ref": "#/definitions/JobInfo"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "GetCurrentUserInfoResponse": {
+      "description": "current user information",
+      "properties": {},
+      "type": "object"
+    },
+    "InstanceUrlResponse": {
+      "description": "Instance Url Response",
+      "properties": {
+        "instanceUrl": {
+          "description": "Instance Url",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Item": {
+      "additionalProperties": {
+        "$ref": "#/definitions/Object"
+      },
+      "description": "Table item entity",
+      "properties": {
+        "dynamicProperties": {
+          "additionalProperties": {
+            "$ref": "#/definitions/Object"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object",
+      "x-ms-dynamic-schema": {
+        "operationId": "GetTable",
+        "parameters": {
+          "table": {
+            "parameter": "table"
+          }
+        },
+        "value-path": "Schema/Items"
+      }
+    },
+    "ItemsList": {
+      "description": "List of Items",
+      "properties": {
+        "value": {
+          "description": "List of Items",
+          "items": {
+            "$ref": "#/definitions/Item"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "JobInfo": {
+      "properties": {
+        "apiVersion": {
+          "description": "API Version",
+          "format": "float",
+          "type": "number",
+          "x-ms-summary": "API Version",
+          "x-ms-visibility": "advanced"
+        },
+        "columnDelimiter": {
+          "description": "Column Delimiter",
+          "enum": [
+            "BACKQUOTE",
+            "CARET",
+            "COMMA",
+            "PIPE",
+            "SEMICOLON",
+            "TAB"
+          ],
+          "type": "string",
+          "x-ms-summary": "Column Delimiter",
+          "x-ms-visibility": "advanced"
+        },
+        "concurrencyMode": {
+          "description": "Concurrency Mode",
+          "enum": [
+            "Parallel",
+            "Serial"
+          ],
+          "type": "string",
+          "x-ms-summary": "Concurrency Mode",
+          "x-ms-visibility": "advanced"
+        },
+        "contentType": {
+          "description": "Content Type",
+          "type": "string",
+          "x-ms-summary": "Content Type",
+          "x-ms-visibility": "advanced"
+        },
+        "contentUrl": {
+          "description": "Content URL",
+          "type": "string",
+          "x-ms-summary": "Content URL",
+          "x-ms-visibility": "advanced"
+        },
+        "createdById": {
+          "description": "Created By ID",
+          "type": "string",
+          "x-ms-summary": "Created By ID",
+          "x-ms-visibility": "advanced"
+        },
+        "createdDate": {
+          "description": "Created Date",
+          "format": "date-time",
+          "type": "string",
+          "x-ms-summary": "Created Date",
+          "x-ms-visibility": "advanced"
+        },
+        "externalIdFieldName": {
+          "description": "External ID Field Name",
+          "type": "string",
+          "x-ms-summary": "External ID Field Name",
+          "x-ms-visibility": "advanced"
+        },
+        "id": {
+          "description": "ID",
+          "type": "string",
+          "x-ms-summary": "ID",
+          "x-ms-visibility": "important"
+        },
+        "jobType": {
+          "description": "Job Type",
+          "enum": [
+            "BigObjectInjest",
+            "Classic",
+            "V2Injest"
+          ],
+          "type": "string",
+          "x-ms-summary": "Job Type",
+          "x-ms-visibility": "advanced"
+        },
+        "lineEnding": {
+          "description": "Line Ending",
+          "enum": [
+            "LF",
+            "CRLF"
+          ],
+          "type": "string",
+          "x-ms-summary": "Line Ending",
+          "x-ms-visibility": "advanced"
+        },
+        "object": {
+          "description": "Object",
+          "type": "string",
+          "x-ms-summary": "Object"
+        },
+        "operation": {
+          "description": "Operation",
+          "enum": [
+            "insert",
+            "delete",
+            "update",
+            "upsert"
+          ],
+          "type": "string",
+          "x-ms-summary": "Operation"
+        },
+        "state": {
+          "description": "State",
+          "enum": [
+            "Open",
+            "UploadComplete",
+            "Aborted",
+            "JobComplete",
+            "Failed"
+          ],
+          "type": "string",
+          "x-ms-summary": "State",
+          "x-ms-visibility": "advanced"
+        },
+        "systemModstamp": {
+          "description": "System Mod Stamp",
+          "format": "date-time",
+          "type": "string",
+          "x-ms-summary": "System Mod Stamp",
+          "x-ms-visibility": "advanced"
+        }
+      },
+      "type": "object"
+    },
+    "MCPQueryRequest": {
+      "properties": {
+        "callbackEndpoint": {
+          "type": "string",
+          "x-ms-visibility": "internal"
+        },
+        "error": {
+          "type": "object"
+        },
+        "id": {
+          "type": "string"
+        },
+        "jsonrpc": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object"
+        },
+        "result": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "MCPQueryResponse": {
+      "properties": {
+        "error": {
+          "type": "object"
+        },
+        "id": {
+          "type": "string"
+        },
+        "jsonrpc": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object"
+        },
+        "result": {
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Object": {
+      "properties": {},
+      "type": "object"
+    },
+    "ObjectWithoutType": {},
+    "PassThroughNativeQuery": {
+      "description": "static schema for pass-through native query execution",
+      "properties": {
+        "Language": {
+          "description": "Query language",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Procedure": {
+      "description": "Procedure",
+      "properties": {
+        "DisplayName": {
+          "description": "Procedure display name",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Procedure name",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "SOSLSearchQueryResponse": {
+      "description": "SOSL search query response",
+      "properties": {
+        "metadata": {
+          "description": "Metadata of the result returned from the query",
+          "properties": {},
+          "type": "object"
+        },
+        "searchRecords": {
+          "description": "A list of search records returned by an SOSL search query",
+          "items": {
+            "$ref": "#/definitions/SearchRecordObject"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "SearchRecordObject": {
+      "description": "Individual record returned by SOSL query",
+      "properties": {
+        "Id": {
+          "description": "Unique identifier of the record",
+          "type": "string"
+        },
+        "attributes": {
+          "description": "Attributes of a search record",
+          "properties": {
+            "type": {
+              "description": "Type of the record",
+              "type": "string"
+            },
+            "url": {
+              "description": "API path that can be used to the retrieve the object",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Table": {
+      "description": "Represents a table.",
+      "properties": {
+        "DisplayName": {
+          "description": "The display name of the table.",
+          "type": "string"
+        },
+        "DynamicProperties": {
+          "additionalProperties": {
+            "$ref": "#/definitions/Object"
+          },
+          "description": "Additional table properties provided by the connector to the clients.",
+          "readOnly": true,
+          "type": "object"
+        },
+        "Name": {
+          "description": "The name of the table. The name is used at runtime.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TableCapabilitiesMetadata": {
+      "description": "Metadata for a table (capabilities)",
+      "properties": {
+        "filterFunctionSupport": {
+          "description": "List of supported filter capabilities",
+          "items": {
+            "enum": [
+              "eq",
+              "ne",
+              "gt",
+              "ge",
+              "lt",
+              "le",
+              "and",
+              "or",
+              "contains",
+              "startswith",
+              "endswith",
+              "length",
+              "indexof",
+              "replace",
+              "substring",
+              "substringof",
+              "tolower",
+              "toupper",
+              "trim",
+              "concat",
+              "year",
+              "month",
+              "day",
+              "hour",
+              "minute",
+              "second",
+              "date",
+              "time",
+              "now",
+              "totaloffsetminutes",
+              "totalseconds",
+              "floor",
+              "ceiling",
+              "round",
+              "not",
+              "negate",
+              "add",
+              "sub",
+              "mul",
+              "div",
+              "mod",
+              "sum",
+              "min",
+              "max",
+              "average",
+              "countdistinct",
+              "null"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "filterRestrictions": {
+          "$ref": "#/definitions/TableFilterRestrictionsMetadata"
+        },
+        "isOnlyServerPagable": {
+          "description": "Server paging restrictions",
+          "type": "boolean"
+        },
+        "selectRestrictions": {
+          "$ref": "#/definitions/TableSelectRestrictionsMetadata"
+        },
+        "serverPagingOptions": {
+          "description": "List of supported server-driven paging capabilities",
+          "items": {
+            "enum": [
+              "top",
+              "skiptoken"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sortRestrictions": {
+          "$ref": "#/definitions/TableSortRestrictionsMetadata"
+        }
+      },
+      "type": "object"
+    },
+    "TableFilterRestrictionsMetadata": {
+      "description": "Metadata for a table (filter restrictions)",
+      "properties": {
+        "filterable": {
+          "description": "Indicates whether this table has filterable columns",
+          "type": "boolean"
+        },
+        "nonFilterableProperties": {
+          "description": "List of non filterable properties",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "requiredProperties": {
+          "description": "List of required properties",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TableMetadata": {
+      "description": "Table metadata",
+      "properties": {
+        "name": {
+          "description": "Table name",
+          "type": "string"
+        },
+        "referencedEntities": {
+          "$ref": "#/definitions/Object"
+        },
+        "schema": {
+          "$ref": "#/definitions/Object"
+        },
+        "title": {
+          "description": "Table title",
+          "type": "string"
+        },
+        "webUrl": {
+          "description": "URL link",
+          "type": "string"
+        },
+        "x-ms-capabilities": {
+          "$ref": "#/definitions/TableCapabilitiesMetadata"
+        },
+        "x-ms-permission": {
+          "description": "Table permission",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TableSelectRestrictionsMetadata": {
+      "description": "Metadata for a table (select restrictions)",
+      "properties": {
+        "selectable": {
+          "description": "Indicates whether this table has selectable columns",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "TableSortRestrictionsMetadata": {
+      "description": "Metadata for a table (sort restrictions)",
+      "properties": {
+        "ascendingOnlyProperties": {
+          "description": "List of properties which support ascending order only",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sortable": {
+          "description": "Indicates whether this table has sortable columns",
+          "type": "boolean"
+        },
+        "unsortableProperties": {
+          "description": "List of unsortable properties",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TablesList": {
+      "description": "Represents a list of tables.",
+      "properties": {
+        "value": {
+          "description": "List of Tables",
+          "items": {
+            "$ref": "#/definitions/Table"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "TabularDataSetsMetadata": {
+      "description": "Tabular dataset metadata",
+      "properties": {
+        "displayName": {
+          "description": "Dataset display name",
+          "type": "string"
+        },
+        "source": {
+          "description": "Dataset source",
+          "type": "string"
+        },
+        "tableDisplayName": {
+          "description": "Table display name",
+          "type": "string"
+        },
+        "tablePluralName": {
+          "description": "Table plural display name",
+          "type": "string"
+        },
+        "urlEncoding": {
+          "description": "Dataset url encoding",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "externalDocs": {
+    "url": "https://docs.microsoft.com/connectors/salesforce"
+  },
+  "host": "logic-apis-westus.azure-apim.net",
+  "info": {
+    "description": "The Salesforce Connector provides an API to work with Salesforce objects.",
+    "title": "Salesforce",
+    "version": "1.0",
+    "x-ms-api-annotation": {
+      "status": "Production"
+    },
+    "x-ms-keywords": [
+      "salesforce",
+      "account",
+      "accounts",
+      "case",
+      "cases",
+      "contact",
+      "contacts",
+      "lead",
+      "leads",
+      "opportunity",
+      "opportunities"
+    ],
+    "x-ms-openai-published-to-copilots": [
+      {
+        "AICopilot-enabled": true,
+        "AICopilotName": "Microsoft 365 Copilot"
+      }
+    ]
+  },
+  "paths": {
+    "/{connectionId}/$metadata.json/datasets": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "GetDataSetsMetadata",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DataSetsMetadata"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceDataSetsMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/$metadata.json/datasets/default/tables/{table}": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets the object metadata for a Salesforce object type.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-object-metadata"
+        },
+        "operationId": "GetTable",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Salesforce object type like 'Leads'",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TableMetadata"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get object metadata",
+        "tags": [
+          "SalesforceTableMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/$metadata.json/datasets/default/tables/{table}/getitem": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "GetMetadataForGetItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TableMetadata"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/$metadata.json/datasets/default/tables/{table}/patchitem": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "GetMetadataForPatchItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TableMetadata"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/$metadata.json/datasets/default/tables/{table}/postitem": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "GetMetadataForPostItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TableMetadata"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/bulk/createjob": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "deprecated": false,
+        "description": "Creates a job, which represents a bulk operation (and associated data) that is sent to Salesforce for asynchronous processing. Provide job data via an Upload Job Data request.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#create-a-job-(v2)"
+        },
+        "operationId": "CreateJobV2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Parameters for new job, such as object to modify and operation type.",
+            "in": "body",
+            "name": "parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateJobParameters"
+            },
+            "x-ms-summary": "Parameters for new job, such as object to modify and operation type."
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateJobResponse"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Create a job (V2)",
+        "tags": [
+          "SalesforceBulk"
+        ],
+        "x-ms-api-annotation": {
+          "family": "CreateJob",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/codeless/getcurrentuserinfo": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Get information about the user currently signed in with the connector",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-current-user-information"
+        },
+        "operationId": "GetCurrentUserInfo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetCurrentUserInfoResponse"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get current user information",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/codeless/getinstanceurl": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Get Instance Url",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-instance-url"
+        },
+        "operationId": "GetInstanceUrl",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InstanceUrlResponse"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Instance Url",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/codeless/httprequest": {
+      "post": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Construct a Salesforce REST API request to invoke",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#send-an-http-request"
+        },
+        "operationId": "HttpRequest",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The full or relative URI. Example of relative URI: /services/data/v41.0/sobjects/account",
+            "in": "header",
+            "name": "Uri",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "URI"
+          },
+          {
+            "default": "GET",
+            "description": "The HTTP method (default is GET).",
+            "enum": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ],
+            "in": "header",
+            "name": "Method",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Method"
+          },
+          {
+            "description": "The request body content.",
+            "in": "body",
+            "name": "Body",
+            "required": false,
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            },
+            "x-ms-summary": "Body"
+          },
+          {
+            "default": "application/json",
+            "description": "The content-type header for the body (default is application/json).",
+            "in": "header",
+            "name": "ContentType",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Content-Type"
+          },
+          {
+            "description": "Custom header 1. Specify in format: header-name: header-value",
+            "in": "header",
+            "name": "CustomHeader1",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "CustomHeader1",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Custom header 2. Specify in format: header-name: header-value",
+            "in": "header",
+            "name": "CustomHeader2",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "CustomHeader2",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Custom header 3. Specify in format: header-name: header-value",
+            "in": "header",
+            "name": "CustomHeader3",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "CustomHeader3",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Custom header 4. Specify in format: header-name: header-value",
+            "in": "header",
+            "name": "CustomHeader4",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "CustomHeader4",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Custom header 5. Specify in format: header-name: header-value",
+            "in": "header",
+            "name": "CustomHeader5",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "CustomHeader5",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ObjectWithoutType"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Send an HTTP request",
+        "tags": [
+          "AgentHidden"
+        ],
+        "x-ms-api-annotation": {
+          "family": "HttpRequest",
+          "revision": 1,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/codeless/jobs/ingest": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Get a list of all jobs",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-all-jobs"
+        },
+        "operationId": "GetAllJobs",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Concurrency Mode",
+            "enum": [
+              "BACKQUOTE",
+              "CARET",
+              "COMMA",
+              "PIPE",
+              "SEMICOLON",
+              "TAB"
+            ],
+            "in": "query",
+            "name": "concurrenyMode",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Concurrency Mode",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Is PK Chunking Enabled",
+            "in": "query",
+            "name": "isPkChunkingEnabled",
+            "required": false,
+            "type": "boolean",
+            "x-ms-summary": "Is PK Chunking Enabled",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "default": "V2Ingest",
+            "description": "Job Type",
+            "enum": [
+              "BigObjectInjest",
+              "Classic",
+              "V2Ingest"
+            ],
+            "in": "query",
+            "name": "jobType",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Job Type",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Query Locator",
+            "in": "query",
+            "name": "queryLocator",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Query Locator",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GetAllJobsResponse"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get all jobs",
+        "x-ms-api-annotation": {
+          "family": "GetAllJobs",
+          "revision": 1,
+          "status": "Production"
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "deprecated": true,
+        "description": "Creates a job, which represents a bulk operation (and associated data) that is sent to Salesforce for asynchronous processing. Provide job data via an Upload Job Data request.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#create-a-job-%5bdeprecated%5d"
+        },
+        "operationId": "CreateJob",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateJobRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/JobInfo"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Create a job",
+        "x-ms-api-annotation": {
+          "family": "CreateJob",
+          "revision": 1,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/codeless/jobs/ingest/{jobId}": {
+      "delete": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Deletes a job. To be deleted, a job must have a state of UploadComplete, JobComplete, Aborted, or Failed.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#delete-a-job"
+        },
+        "operationId": "DeleteJob",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetAllJobs",
+              "value-collection": "records",
+              "value-path": "id",
+              "value-title": "id"
+            },
+            "x-ms-summary": "Job ID"
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Delete a job",
+        "tags": [
+          "AgentHidden"
+        ],
+        "x-ms-api-annotation": {
+          "family": "DeleteJob",
+          "revision": 1,
+          "status": "Production"
+        }
+      },
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Retrieves detailed information about a job.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-job-info"
+        },
+        "operationId": "GetJobInfo",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetAllJobs",
+              "value-collection": "records",
+              "value-path": "id",
+              "value-title": "id"
+            },
+            "x-ms-summary": "Job ID"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CheckJobResponse"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get job info",
+        "x-ms-api-annotation": {
+          "family": "CheckJobStatus",
+          "revision": 1,
+          "status": "Production"
+        }
+      },
+      "patch": {
+        "deprecated": false,
+        "description": "Closes or aborts a job. Use UploadComplete to close a job, or Aborted to abort a job. If you close a job, Salesforce queues the job and uploaded data for processing, and you can’t add any additional job data. If you abort a job, the job does not get queued or processed.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#close-or-abort-a-job"
+        },
+        "operationId": "CloseJob",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetAllJobs",
+              "value-collection": "records",
+              "value-path": "id",
+              "value-title": "id"
+            },
+            "x-ms-summary": "Job ID"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CloseJobRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/JobInfo"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Close or abort a job",
+        "tags": [
+          "AgentHidden"
+        ],
+        "x-ms-api-annotation": {
+          "family": "CloseJob",
+          "revision": 1,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/codeless/jobs/ingest/{jobId}/batches": {
+      "put": {
+        "deprecated": false,
+        "description": "Uploads data for a job using CSV data.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#upload-job-data"
+        },
+        "operationId": "UploadJobData",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetAllJobs",
+              "value-collection": "records",
+              "value-path": "id",
+              "value-title": "id"
+            },
+            "x-ms-summary": "Job ID"
+          },
+          {
+            "description": "CSV Data to upload",
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "format": "binary",
+              "type": "string"
+            },
+            "x-ms-summary": "CSV File Content",
+            "x-ms-visibility": "important"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Upload job data",
+        "x-ms-api-annotation": {
+          "family": "UploadJobData",
+          "revision": 1,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/codeless/jobs/ingest/{jobId}/results": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Retrieves a list of records based on the result type for a completed job.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-job-results"
+        },
+        "operationId": "GetJobRecordResults",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Job ID",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetAllJobs",
+              "value-collection": "records",
+              "value-path": "id",
+              "value-title": "id"
+            },
+            "x-ms-summary": "Job ID"
+          },
+          {
+            "description": "Result Type",
+            "enum": [
+              "Successful",
+              "Failed",
+              "Unprocessed"
+            ],
+            "in": "query",
+            "name": "resultType",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Result Type"
+          }
+        ],
+        "produces": [
+          "text/csv"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get job results",
+        "x-ms-api-annotation": {
+          "family": "GetJobRecordResults",
+          "revision": 1,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/codeless/search": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "deprecated": false,
+        "description": "Execute the specified SOSL search qyery",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#execute-sosl-search-query"
+        },
+        "operationId": "ExecuteSOSLQuery",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "SOSL search string",
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "SOSL search string",
+            "x-ms-visibility": "important"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SOSLSearchQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Operationn Failed."
+          }
+        },
+        "summary": "Execute SOSL search query",
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets datasets.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-datasets"
+        },
+        "operationId": "GetDataSets",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DataSetsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get datasets",
+        "tags": [
+          "SalesforceDataSet"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "ODataStyleGetTables",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TablesList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTable"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables({table})/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "ODataStyleGetItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "A sequence of OData aggregation transformations",
+            "in": "query",
+            "name": "$apply",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Aggregation transformation",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "internal"
+      },
+      "post": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation creates a record and allows null values.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#create-record"
+        },
+        "operationId": "ODataStylePostItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "dataset name",
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "dataset name"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "table name"
+          },
+          {
+            "description": "Record",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Create record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "ODataStylePostItem",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables({table})/items({id})": {
+      "delete": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "ODataStyleDeleteItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "internal"
+      },
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-record"
+        },
+        "operationId": "ODataStyleGetItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "dataset name",
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "dataset name"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "table name"
+          },
+          {
+            "description": "item key",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "item key"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "ODataStyleGetItem",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "internal"
+      },
+      "patch": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "Patches a specific item in the table",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#patches-a-specific-item-in-the-table"
+        },
+        "operationId": "ODataStylePatchItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "dataset name",
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "dataset name"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "table name"
+          },
+          {
+            "description": "item key",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "item key"
+          },
+          {
+            "description": "item to be updated",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            },
+            "x-ms-summary": "item to be updated"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Patches a specific item in the table",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables({table})/ondeleteditems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "ODataStyleGetOnDeletedItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables({table})/onnewitems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation triggers when there are newly created records.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#when-a-record-is-created"
+        },
+        "operationId": "ODataStyleGetOnNewItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "dataset name",
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "dataset name"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Salesforce Object Type"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "When a record is created",
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets({dataset})/tables({table})/onupdateditems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation triggers when there are newly created or modified records.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#when-a-record-is-created-or-modified"
+        },
+        "operationId": "ODataStyleGetOnUpdatedItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "dataset name",
+            "in": "path",
+            "name": "dataset",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "dataset name"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Salesforce Object Type"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "When a record is created or modified",
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets/default/tables": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation lists the available Salesforce object types.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-object-types"
+        },
+        "operationId": "GetTables",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TablesList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get object types",
+        "tags": [
+          "SalesforceTable"
+        ],
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/account/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Account records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-account-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_account",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Account records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/case/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Case records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-case-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_case",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Case records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/contact/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Contact records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-contact-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_contact",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Contact records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/lead/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Lead records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-lead-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_lead",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Lead records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-agent-visibility": "important",
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/opportunity/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Opportunity records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-opportunity-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_opportunity",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Opportunity records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/product2/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets Product records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-product-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_product2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get Product records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/user/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets User records from Salesforce.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-user-records-from-salesforce"
+        },
+        "operationId": "GetItems_table_user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get User records from Salesforce",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/externalIdFields": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation retrieves external ID fields of Salesforce object type.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-external-id-fields"
+        },
+        "operationId": "GetExternalIdFields",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ExternalIdFieldsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get External ID Fields",
+        "tags": [
+          "SalesforceTableMetadata"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/externalIdFields/{externalIdField}/{externalId}": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation retrieves a record using an external ID.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-a-record-by-external-id"
+        },
+        "operationId": "GetItemByExternalId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "Field marked as external ID field on Salesforce object.",
+            "in": "path",
+            "name": "externalIdField",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetExternalIdFields",
+              "parameters": {
+                "table": {
+                  "parameter": "table"
+                }
+              },
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "External ID Field",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "External ID of the record to retrieve.",
+            "in": "path",
+            "name": "externalId",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "External ID",
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForGetItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get a Record by External ID",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "advanced"
+      },
+      "patch": {
+        "consumes": [],
+        "deprecated": true,
+        "description": "This operation inserts or updates (upserts) a record using an external ID.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#insert-or-update-(upsert)-a-record-by-external-id-%5bdeprecated%5d"
+        },
+        "operationId": "PatchItemByExternalId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "Field marked as external ID field on Salesforce object.",
+            "in": "path",
+            "name": "externalIdField",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetExternalIdFields",
+              "parameters": {
+                "table": {
+                  "parameter": "table"
+                }
+              },
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "External ID Field",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "External ID of the record to upsert.",
+            "in": "path",
+            "name": "externalId",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "External ID",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The record with changed properties.",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForGetItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Insert or Update (Upsert) a Record by External ID",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "PatchItemByExternalId",
+          "revision": 1,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/items": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets records of a certain Salesforce object type like 'Leads'.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-records"
+        },
+        "operationId": "GetItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get records",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-openai-data": {
+          "openai-enabled": true,
+          "operations": [
+            {
+              "description": "This operation allows to search on Salesforce Account objects. Available properties for Account objects are: Name, Phone, Industry, AnnualRevenue, OwnerId. Schema for Account object can be found on the response schema for this API.",
+              "operationId": "GetAccounts",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": "delete",
+                  "value": "Account"
+                },
+                {
+                  "name": "$select",
+                  "properties": [
+                    {
+                      "name": "default",
+                      "type": "upsert",
+                      "value": "Name, Phone, Industry, AnnualRevenue, OwnerId, Id"
+                    },
+                    {
+                      "name": "required",
+                      "type": "upsert",
+                      "value": true
+                    }
+                  ],
+                  "type": "upsert"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "description": "Response when getting Accounts",
+                    "type": "object"
+                  }
+                }
+              },
+              "summary": "Search Salesforce Accounts"
+            },
+            {
+              "description": "This operation allows to search on Salesforce Case objects. Available properties for Case objects are: CaseNumber, ContactId, AccountId, Status, Subject, OwnerId. Schema for Case object can be found on the response schema for this API.",
+              "operationId": "GetCases",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": "delete",
+                  "value": "Case"
+                },
+                {
+                  "name": "$select",
+                  "properties": [
+                    {
+                      "name": "default",
+                      "type": "upsert",
+                      "value": "CaseNumber, ContactId, AccountId, Status, Subject, OwnerId"
+                    },
+                    {
+                      "name": "required",
+                      "type": "upsert",
+                      "value": true
+                    }
+                  ],
+                  "type": "upsert"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "description": "Response when getting Cases",
+                    "type": "object"
+                  }
+                }
+              },
+              "summary": "Search Salesforce Cases"
+            },
+            {
+              "description": "This operation allows to search on Salesforce Contact objects. Available properties for Contact objects are: Name, Phone, Email, Title. Schema for Contact object can be found on the response schema for this API.",
+              "operationId": "GetContacts",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": "delete",
+                  "value": "Contact"
+                },
+                {
+                  "name": "$select",
+                  "properties": [
+                    {
+                      "name": "default",
+                      "type": "upsert",
+                      "value": "Name, Phone, Email, Title, AccountId"
+                    },
+                    {
+                      "name": "required",
+                      "type": "upsert",
+                      "value": true
+                    }
+                  ],
+                  "type": "upsert"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "description": "Response when getting Contacts",
+                    "type": "object"
+                  }
+                }
+              },
+              "summary": "Search Salesforce Contacts"
+            },
+            {
+              "description": "This operation allows to search on Salesforce Lead objects. Available properties for Lead objects are: Name, Title, Company, Phone, Email, Status, CreatedDate. Schema for Lead object can be found on the response schema for this API.",
+              "operationId": "GetLeads",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": "delete",
+                  "value": "Lead"
+                },
+                {
+                  "name": "$select",
+                  "properties": [
+                    {
+                      "name": "default",
+                      "type": "upsert",
+                      "value": "Name, Title, Company, Phone, Email, Status, CreatedDate"
+                    },
+                    {
+                      "name": "required",
+                      "type": "upsert",
+                      "value": true
+                    }
+                  ],
+                  "type": "upsert"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "description": "Response when getting Leads",
+                    "type": "object"
+                  }
+                }
+              },
+              "summary": "Search Salesforce Leads"
+            },
+            {
+              "description": "This operation allows to search on Salesforce Opportunity objects. Available properties for Opportunity objects are: Name, StageName, Amount, Probability, CloseDate, OwnerId, CreatedDate. Schema for Opportunity object can be found on the response schema for this API.",
+              "operationId": "GetOpportunities",
+              "parameters": [
+                {
+                  "name": "table",
+                  "type": "delete",
+                  "value": "Opportunity"
+                },
+                {
+                  "name": "$select",
+                  "properties": [
+                    {
+                      "name": "default",
+                      "type": "upsert",
+                      "value": "AccountId, Name, StageName, Amount, CloseDate, Probability"
+                    },
+                    {
+                      "name": "required",
+                      "type": "upsert",
+                      "value": true
+                    }
+                  ],
+                  "type": "upsert"
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "items": {
+                      "properties": {
+                        "AccountId": {
+                          "title": "Account ID",
+                          "type": "string",
+                          "x-ms-capabilities": {
+                            "filterFunctions": [
+                              "lt",
+                              "le",
+                              "eq",
+                              "ne",
+                              "gt",
+                              "ge",
+                              "and",
+                              "or",
+                              "not",
+                              "contains",
+                              "startswith",
+                              "endswith"
+                            ]
+                          },
+                          "x-ms-keyOrder": 0,
+                          "x-ms-keyType": "none",
+                          "x-ms-permission": "read-write",
+                          "x-ms-sort": "asc,desc"
+                        },
+                        "Amount": {
+                          "format": "currency",
+                          "title": "Amount",
+                          "type": "number",
+                          "x-ms-capabilities": {
+                            "filterFunctions": [
+                              "lt",
+                              "le",
+                              "eq",
+                              "ne",
+                              "gt",
+                              "ge",
+                              "and",
+                              "or",
+                              "not"
+                            ]
+                          },
+                          "x-ms-keyOrder": 0,
+                          "x-ms-keyType": "none",
+                          "x-ms-permission": "read-write",
+                          "x-ms-sort": "asc,desc"
+                        },
+                        "CloseDate": {
+                          "format": "date",
+                          "title": "Close Date",
+                          "type": "string",
+                          "x-ms-capabilities": {
+                            "filterFunctions": [
+                              "lt",
+                              "le",
+                              "eq",
+                              "ne",
+                              "gt",
+                              "ge",
+                              "and",
+                              "or",
+                              "not",
+                              "contains",
+                              "startswith",
+                              "endswith"
+                            ]
+                          },
+                          "x-ms-keyOrder": 0,
+                          "x-ms-keyType": "none",
+                          "x-ms-permission": "read-write",
+                          "x-ms-sort": "asc,desc"
+                        },
+                        "Name": {
+                          "title": "Name",
+                          "type": "string",
+                          "x-ms-capabilities": {
+                            "filterFunctions": [
+                              "lt",
+                              "le",
+                              "eq",
+                              "ne",
+                              "gt",
+                              "ge",
+                              "and",
+                              "or",
+                              "not",
+                              "contains",
+                              "startswith",
+                              "endswith"
+                            ]
+                          },
+                          "x-ms-keyOrder": 0,
+                          "x-ms-keyType": "none",
+                          "x-ms-permission": "read-write",
+                          "x-ms-sort": "asc,desc"
+                        },
+                        "StageName": {
+                          "enum": [
+                            "Qualify",
+                            "Meet & Present",
+                            "Propose",
+                            "Negotiate",
+                            "Closed Won",
+                            "Closed Lost"
+                          ],
+                          "title": "Stage",
+                          "type": "string",
+                          "x-ms-capabilities": {
+                            "filterFunctions": [
+                              "lt",
+                              "le",
+                              "eq",
+                              "ne",
+                              "gt",
+                              "ge",
+                              "and",
+                              "or",
+                              "not",
+                              "contains",
+                              "startswith",
+                              "endswith"
+                            ]
+                          },
+                          "x-ms-keyOrder": 0,
+                          "x-ms-keyType": "none",
+                          "x-ms-permission": "read-write",
+                          "x-ms-sort": "asc,desc"
+                        }
+                      },
+                      "required": [
+                        "Name",
+                        "StageName",
+                        "CloseDate"
+                      ],
+                      "title": "Opportunity",
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                }
+              },
+              "summary": "Search Salesforce Opportunities"
+            }
+          ]
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "@odata.nextLink"
+        },
+        "x-ms-visibility": "important"
+      },
+      "post": {
+        "consumes": [],
+        "deprecated": true,
+        "description": "This operation creates a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#create-record-%5bdeprecated%5d"
+        },
+        "operationId": "PostItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The record to create.",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPostItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPostItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Create record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/items/{id}": {
+      "delete": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation deletes a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#delete-record"
+        },
+        "operationId": "DeleteItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The unique identifier of record to delete.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Record Id",
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Delete record",
+        "tags": [
+          "SalesforceTableData"
+        ]
+      },
+      "get": {
+        "consumes": [],
+        "deprecated": true,
+        "description": "This operation gets a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-record-%5bdeprecated%5d"
+        },
+        "operationId": "GetItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-url-encoding": "double"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForGetItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "GetItem",
+          "revision": 1,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      },
+      "patch": {
+        "consumes": [],
+        "deprecated": true,
+        "description": "This operation updates a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#update-record-%5bdeprecated%5d"
+        },
+        "operationId": "PatchItem",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The unique identifier of record to update.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Record Id",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The record with changed properties.",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Update record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/ondeleteditems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "GetOnDeletedItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Total number of entries to retrieve (default = all).",
+            "format": "int32",
+            "in": "query",
+            "name": "$top",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Top Count",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "The number of entries to skip (default = 0).",
+            "format": "int32",
+            "in": "query",
+            "name": "$skip",
+            "required": false,
+            "type": "integer",
+            "x-ms-summary": "Skip Count",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/onnewitems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation triggers when there are newly created records.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#when-a-record-is-created"
+        },
+        "operationId": "GetOnNewItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "When a record is created",
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-trigger-hint": "To see it work now, create a record in Salesforce.",
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/datasets/default/tables/{table}/onupdateditems": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation triggers when there are newly modified records.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#when-a-record-is-modified"
+        },
+        "operationId": "GetOnUpdatedItems",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "An ODATA filter query to restrict the entries returned (e.g. stringColumn eq 'string' OR numberColumn lt 123).",
+            "in": "query",
+            "name": "$filter",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Filter Query",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "An ODATA orderBy query for specifying the order of entries.",
+            "in": "query",
+            "name": "$orderby",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Order By",
+            "x-ms-visibility": "advanced"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ItemsList"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "When a record is modified",
+        "tags": [
+          "SalesforceTableDataTrigger"
+        ],
+        "x-ms-trigger": "batch",
+        "x-ms-trigger-hint": "To see it work now, modify a record in Salesforce.",
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/mcp/SalesforceManagement": {
+      "post": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "MCP server for Salesforce",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#mcp-server-for-salesforce"
+        },
+        "operationId": "mcp_SalesforceManagement",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "in": "body",
+            "name": "queryRequest",
+            "schema": {
+              "$ref": "#/definitions/MCPQueryRequest"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sessionId",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "MCP Server response",
+            "schema": {
+              "$ref": "#/definitions/MCPQueryResponse"
+            }
+          },
+          "default": {
+            "description": "Operation failed."
+          }
+        },
+        "summary": "MCP server for Salesforce",
+        "tags": [
+          "agentic",
+          "Action",
+          "McpStreamable"
+        ],
+        "x-ms-mcs-visibility": "featured",
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/soql/executesoqlquery": {
+      "post": {
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "deprecated": false,
+        "description": "Execute a SOQL query.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#execute-a-soql-query"
+        },
+        "operationId": "ExecuteSoqlQuery",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "Operation parameters.",
+            "in": "body",
+            "name": "queryParameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ExecuteSoqlQueryParameters"
+            },
+            "x-ms-summary": "Query"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Object"
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Execute a SOQL query",
+        "tags": [
+          "SalesforceQuery"
+        ],
+        "x-ms-api-annotation": {
+          "family": "ExecuteSoqlQuery",
+          "revision": 1,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/testconnection": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "operationId": "TestConnection",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          }
+        ],
+        "produces": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "tags": [
+          "SalesforceDiagnostic"
+        ],
+        "x-ms-visibility": "internal"
+      }
+    },
+    "/{connectionId}/v2/datasets/default/tables/{table}/externalIdFields/{externalIdField}/{externalId}": {
+      "patch": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation inserts or updates (upserts) a record using an external ID.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#insert-or-update-(upsert)-a-record-by-external-id-(v2)"
+        },
+        "operationId": "PatchItemByExternalIdV2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "The Salesforce object type like 'Leads'.",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "Field marked as external ID field on Salesforce object.",
+            "in": "path",
+            "name": "externalIdField",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetExternalIdFields",
+              "parameters": {
+                "table": {
+                  "parameter": "table"
+                }
+              },
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "External ID Field",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "External ID of the record to upsert.",
+            "in": "path",
+            "name": "externalId",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "External ID",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "The record with changed properties.",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForGetItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Insert or Update (Upsert) a Record by External ID (V2)",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "PatchItemByExternalId",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      }
+    },
+    "/{connectionId}/v2/datasets/default/tables/{table}/items": {
+      "post": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation creates a record and allows null values.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#create-record"
+        },
+        "operationId": "PostItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "Record",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPostItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "Record"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPostItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Create record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "PostItem",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "important"
+      }
+    },
+    "/{connectionId}/v2/datasets/default/tables/{table}/items/{id}": {
+      "get": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation gets a record.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#get-record"
+        },
+        "operationId": "GetItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "item key",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Record Id",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForGetItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Get record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "GetItem",
+          "revision": 2,
+          "status": "Production"
+        },
+        "x-ms-visibility": "advanced"
+      },
+      "patch": {
+        "consumes": [],
+        "deprecated": true,
+        "description": "This operation updates a record and allows null values.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#update-record-%5bdeprecated%5d"
+        },
+        "operationId": "PatchItem_V2",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "item key",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Record Id",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "item to be updated",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "item to be updated"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Update record",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "PatchItem",
+          "revision": 2,
+          "status": "Production"
+        }
+      }
+    },
+    "/{connectionId}/v3/datasets/default/tables/{table}/items/{id}": {
+      "patch": {
+        "consumes": [],
+        "deprecated": false,
+        "description": "This operation updates a record and allows null values.",
+        "externalDocs": {
+          "url": "https://docs.microsoft.com/connectors/salesforce/#update-record-(v3)"
+        },
+        "operationId": "PatchItem_V3",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "connectionId",
+            "required": true,
+            "type": "string",
+            "x-ms-visibility": "internal"
+          },
+          {
+            "description": "table name",
+            "in": "path",
+            "name": "table",
+            "required": true,
+            "type": "string",
+            "x-ms-dynamic-values": {
+              "operationId": "GetTables",
+              "parameters": {},
+              "value-collection": "value",
+              "value-path": "Name",
+              "value-title": "DisplayName"
+            },
+            "x-ms-summary": "Salesforce Object Type",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "item key",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "x-ms-summary": "Record Id",
+            "x-ms-url-encoding": "double"
+          },
+          {
+            "description": "item to be updated",
+            "in": "body",
+            "name": "item",
+            "required": true,
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            },
+            "x-ms-summary": "item to be updated"
+          },
+          {
+            "description": "Specific fields to retrieve from entries (default = all).",
+            "in": "query",
+            "name": "$select",
+            "required": false,
+            "type": "string",
+            "x-ms-summary": "Select Query",
+            "x-ms-visibility": "advanced"
+          }
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "additionalProperties": {
+                "$ref": "#/definitions/Item"
+              },
+              "type": "object",
+              "x-ms-dynamic-schema": {
+                "operationId": "GetMetadataForPatchItem",
+                "parameters": {
+                  "table": {
+                    "parameter": "table"
+                  }
+                },
+                "value-path": "Schema/Items"
+              }
+            }
+          },
+          "default": {
+            "description": "Operation Failed."
+          }
+        },
+        "summary": "Update record (V3)",
+        "tags": [
+          "SalesforceTableData"
+        ],
+        "x-ms-api-annotation": {
+          "family": "PatchItem",
+          "revision": 3,
+          "status": "Production"
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "x-ms-capabilities": {
+    "testConnection": {
+      "operationId": "TestConnection",
+      "parameters": {}
+    }
+  }
+}
