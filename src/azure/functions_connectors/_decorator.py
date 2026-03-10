@@ -42,7 +42,9 @@ class FunctionsConnectors:
 
         # Typed trigger builders
         from ._triggers.office365 import Office365Triggers
+        from ._triggers.teams import TeamsTrigers
         self.office365 = Office365Triggers(self)
+        self.teams = TeamsTrigers(self)
 
         # Set module-level ref so poller/cleanup can access us
         global _active_connectors
