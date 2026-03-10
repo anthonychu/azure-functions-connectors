@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.venv/
+*.egg
+local.settings.json
+.python_packages/
+.funcignore

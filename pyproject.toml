@@ -1,0 +1,22 @@
+[project]
+name = "azure-functions-connector-triggers"
+version = "0.1.0"
+description = "Connector trigger bindings for Azure Functions"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+    "azure-functions>=1.17.0",
+    "azure-identity>=1.15.0",
+    "azure-storage-blob>=12.19.0",
+    "azure-storage-queue>=12.9.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["azure", "azure.functions", "azure.functions.connector_triggers"]
+
+[tool.setuptools.package-dir]
+"" = "src"
