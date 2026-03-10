@@ -1,1 +1,0 @@
-import azure.functions, os; [azure.functions.__path__.append(os.path.join(p, 'functions')) for p in __import__('azure').__path__ if os.path.isdir(os.path.join(p, 'functions')) and os.path.join(p, 'functions') not in azure.functions.__path__]
