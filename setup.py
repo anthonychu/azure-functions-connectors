@@ -12,5 +12,6 @@ setup(
         "azure-identity>=1.15.0",
         "azure-storage-blob>=12.19.0",
         "azure-storage-queue>=12.9.0",
+        "aiohttp>=3.8.0",
     ],
 )
