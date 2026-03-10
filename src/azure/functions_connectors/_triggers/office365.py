@@ -15,131 +15,137 @@ if TYPE_CHECKING:
 # ---------------------------------------------------------------------------
 
 class Office365Email(ConnectorItem):
-    """Typed wrapper for an Office 365 email item."""
+    """Typed wrapper for an Office 365 email item.
+
+    Supports both camelCase (v3 trigger) and PascalCase (v1 trigger) keys.
+    """
 
     @property
     def id(self) -> str:
-        return self.get("Id", "")
+        return self.get("id") or self.get("Id", "")
 
     @property
     def subject(self) -> str:
-        return self.get("Subject", "")
+        return self.get("subject") or self.get("Subject", "")
 
     @property
     def sender(self) -> str:
-        return self.get("From", "")
+        return self.get("from") or self.get("From", "")
 
     @property
     def to(self) -> str:
-        return self.get("To", "")
+        return self.get("toRecipients") or self.get("To", "")
 
     @property
     def cc(self) -> str | None:
-        return self.get("Cc")
+        return self.get("ccRecipients") or self.get("Cc")
 
     @property
     def bcc(self) -> str | None:
-        return self.get("Bcc")
+        return self.get("bccRecipients") or self.get("Bcc")
 
     @property
     def body(self) -> str:
-        return self.get("Body", "")
+        return self.get("body") or self.get("Body", "")
 
     @property
     def body_preview(self) -> str:
-        return self.get("BodyPreview", "")
+        return self.get("bodyPreview") or self.get("BodyPreview", "")
 
     @property
-    def importance(self) -> int:
-        return self.get("Importance", 0)
+    def importance(self) -> str:
+        return self.get("importance") or self.get("Importance", "")
 
     @property
     def received_at(self) -> str:
-        return self.get("DateTimeReceived", "")
+        return self.get("receivedDateTime") or self.get("DateTimeReceived", "")
 
     @property
     def has_attachment(self) -> bool:
-        return self.get("HasAttachment", False)
+        return self.get("hasAttachments") or self.get("HasAttachment", False)
 
     @property
     def is_read(self) -> bool:
-        return self.get("IsRead", False)
+        return self.get("isRead") or self.get("IsRead", False)
 
     @property
     def is_html(self) -> bool:
-        return self.get("IsHtml", False)
+        return self.get("isHtml") or self.get("IsHtml", False)
 
     @property
     def internet_message_id(self) -> str:
-        return self.get("InternetMessageId", "")
+        return self.get("internetMessageId") or self.get("InternetMessageId", "")
 
     @property
     def conversation_id(self) -> str:
-        return self.get("ConversationId", "")
+        return self.get("conversationId") or self.get("ConversationId", "")
 
     @property
     def attachments(self) -> list:
-        return self.get("Attachments", [])
+        return self.get("attachments") or self.get("Attachments", [])
 
     @property
     def reply_to(self) -> str | None:
-        return self.get("ReplyTo")
+        return self.get("replyTo") or self.get("ReplyTo")
 
 
 class Office365Event(ConnectorItem):
-    """Typed wrapper for an Office 365 calendar event item."""
+    """Typed wrapper for an Office 365 calendar event item.
+
+    Supports both camelCase and PascalCase keys.
+    """
 
     @property
     def id(self) -> str:
-        return self.get("Id", "")
+        return self.get("id") or self.get("Id", "")
 
     @property
     def subject(self) -> str:
-        return self.get("Subject", "")
+        return self.get("subject") or self.get("Subject", "")
 
     @property
     def body(self) -> str:
-        return self.get("Body", "")
+        return self.get("body") or self.get("Body", "")
 
     @property
     def body_preview(self) -> str:
-        return self.get("BodyPreview", "")
+        return self.get("bodyPreview") or self.get("BodyPreview", "")
 
     @property
     def start(self) -> str:
-        return self.get("Start", "")
+        return self.get("start") or self.get("Start", "")
 
     @property
     def end(self) -> str:
-        return self.get("End", "")
+        return self.get("end") or self.get("End", "")
 
     @property
     def location(self) -> str:
-        return self.get("Location", "")
+        return self.get("location") or self.get("Location", "")
 
     @property
     def organizer(self) -> str:
-        return self.get("Organizer", "")
+        return self.get("organizer") or self.get("Organizer", "")
 
     @property
     def is_all_day(self) -> bool:
-        return self.get("IsAllDay", False)
+        return self.get("isAllDay") or self.get("IsAllDay", False)
 
     @property
     def show_as(self) -> str:
-        return self.get("ShowAs", "")
+        return self.get("showAs") or self.get("ShowAs", "")
 
     @property
     def attendees(self) -> list:
-        return self.get("Attendees", [])
+        return self.get("attendees") or self.get("Attendees", [])
 
     @property
     def is_reminder_on(self) -> bool:
-        return self.get("IsReminderOn", False)
+        return self.get("isReminderOn") or self.get("IsReminderOn", False)
 
     @property
     def recurrence(self) -> str | None:
-        return self.get("Recurrence")
+        return self.get("recurrence") or self.get("Recurrence")
 
 
 # ---------------------------------------------------------------------------

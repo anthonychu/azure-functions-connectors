@@ -9,7 +9,7 @@ from typing import Callable
 
 import azure.functions as func
 
-from ._models import TriggerConfig, TriggerRegistration
+from ._models import ConnectorItem, TriggerConfig, TriggerRegistration
 
 logger = logging.getLogger(__name__)
 
@@ -121,19 +121,19 @@ class FunctionsConnectors:
 
         func_name = user_func.__name__
 
-        # Detect typed item model from handler's type hint
-        hints = {}
-        try:
-            hints = inspect.get_annotations(user_func)
-        except Exception:
-            pass
-        # Get the first parameter's type (skip 'self' if present)
+        # Detect typed item model from handler's type hint.
+        # Use get_type_hints() to resolve string annotations from
+        # `from __future__ import annotations`.
         item_type = None
-        for param_name, param_type in hints.items():
-            if param_type is not dict and isinstance(param_type, type) and hasattr(param_type, '_data'):
-                # It's a ConnectorItem subclass
-                item_type = param_type
-            break
+        try:
+            import typing
+            hints = typing.get_type_hints(user_func)
+            for param_name, param_type in hints.items():
+                if param_type is not dict and isinstance(param_type, type) and issubclass(param_type, ConnectorItem):
+                    item_type = param_type
+                break
+        except Exception as e:
+            logger.debug("Could not resolve type hints for %s: %s", func_name, e)
 
         async def queue_processor(msg: func.QueueMessage) -> None:
             body = msg.get_body().decode("utf-8")
