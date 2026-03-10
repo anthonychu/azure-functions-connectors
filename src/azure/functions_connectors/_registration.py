@@ -26,10 +26,10 @@ def _check_registration() -> None:
     from ._decorator import _registered_triggers
 
     if _registered_triggers and not _registration_done:
-        logging.getLogger(__name__).error(
+        logging.getLogger(__name__).warning(
             "azure-functions-connectors: @generic_connection_trigger decorators "
             "found but register_connector_triggers(app) was never called. "
-            "Triggers will NOT fire."
+            "Please call register_connector_triggers(app) after your decorators."
         )
 
 

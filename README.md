@@ -88,12 +88,10 @@ State (cursor, backoff) is persisted in **blob storage** so polling resumes acro
 ### Registration
 
 ```python
-ct.register_connector_triggers(app, poll_interval="0 */1 * * * *")
+fc.register_connector_triggers(app)
 ```
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `poll_interval` | str | `"0 */1 * * * *"` | CRON schedule for the polling timer |
+Call this after all `@generic_connection_trigger` decorators. It validates that triggers are registered and is required for the atexit safety check.
 
 ## Common Trigger Paths
 

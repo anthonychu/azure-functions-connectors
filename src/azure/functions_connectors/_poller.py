@@ -117,12 +117,14 @@ async def _poll_single_trigger(trigger: TriggerRegistration) -> None:
 
         if result.status == 200 and result.items:
             # Renew lease before enqueuing many items to avoid expiry
-            if len(result.items) > 10:
+            if len(result.items) > 10 and lease_id:
                 try:
+                    from ._state import _get_blob_service_client, _CONTAINER_NAME, _blob_path
+                    from azure.storage.blob.aio import BlobLeaseClient
                     blob_client = _get_blob_service_client().get_blob_client(
                         _CONTAINER_NAME, _blob_path(instance_id)
                     )
-                    lease_obj = blob_client.get_blob_lease_client(lease_id)
+                    lease_obj = BlobLeaseClient(blob_client, lease_id=lease_id)
                     await lease_obj.renew()
                 except Exception:
                     pass  # Best effort renewal
