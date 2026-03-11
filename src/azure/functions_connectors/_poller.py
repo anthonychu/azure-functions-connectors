@@ -125,7 +125,7 @@ async def _poll_single_trigger(trigger: TriggerRegistration) -> None:
         new_state.structural_hash = trigger.structural_hash
         new_state.runtime_hash = trigger.runtime_hash
 
-        if result.status == 200 and result.items:
+        if result.items:
             # Renew lease before enqueuing many items to avoid expiry
             if len(result.items) > 10 and lease_id:
                 try:
@@ -148,9 +148,13 @@ async def _poll_single_trigger(trigger: TriggerRegistration) -> None:
             )
         else:
             # Empty poll (202 / no items) -- exponential backoff
+            # Cap Retry-After to max_interval — some connectors (e.g. SharePoint)
+            # return extremely large values (21600s) meant for Logic Apps.
             new_state.consecutive_empty += 1
             if result.retry_after is not None:
-                new_state.backoff_seconds = result.retry_after
+                new_state.backoff_seconds = min(
+                    result.retry_after, trigger.config.max_interval
+                )
             else:
                 new_state.backoff_seconds = min(
                     new_state.backoff_seconds * 2,
