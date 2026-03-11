@@ -106,7 +106,7 @@ class TeamsChannel(ConnectorItem):
         return self.get("membershipType") or self.get("MembershipType", "")
 
 
-class TeamsTrigers:
+class TeamsTriggers:
     """Teams client factory.
 
     Note: Teams polling triggers are not available due to a connector-side
@@ -122,3 +122,7 @@ class TeamsTrigers:
         from .._clients.teams import TeamsClient
 
         return TeamsClient(ConnectorClient(connection_id))
+
+
+# Backward-compatible alias for the original typo'ed class name.
+TeamsTrigers = TeamsTriggers

@@ -187,7 +187,13 @@ Set `OFFICE365_CONNECTION_ID` (or equivalent) in the Function App's Application 
 - Polling interval defaults to 1 minute (configurable)
 - Each trigger's state (cursor + backoff) is stored in blob storage and survives restarts
 
-## 7. Available Connectors
+## 7. Known Limitations
+
+- **Teams polling triggers are disabled:** the Teams managed connector returns `502 Unable to compute iso trigger state` once it finds items. Use `connectors.teams.get_client(...)` from a timer-triggered function instead.
+- **HTTP proxy actions that require header-based `Method` / `Uri` do not work through ARM `dynamicInvoke`:** this affects the Office 365 and Teams Graph proxy actions. Use typed client methods or the native SDK instead.
+- **SharePoint paths require double-encoded site URLs:** `connectors.sharepoint.*` handles this automatically, but generic trigger/client paths must be encoded manually.
+
+## 8. Available Connectors
 
 Any Azure managed API connector can be used with `generic_trigger()` and `get_client()`. Popular options:
 
@@ -196,7 +202,7 @@ Any Azure managed API connector can be used with `generic_trigger()` and `get_cl
 | Office 365 Outlook | `office365` | Email, Calendar, Contacts |
 | Salesforce | `salesforce` | CRM records |
 | SharePoint Online | `sharepointonline` | Lists, Documents |
-| Microsoft Teams | `teams` | Messages, Channels |
+| Microsoft Teams | `teams` | Messages, Channels (**client only**; polling triggers unavailable) |
 | Dynamics 365 | `dynamicscrmonline` | Business data |
 | OneDrive for Business | `onedriveforbusiness` | Files |
 | Azure Key Vault | `keyvault` | Secrets |

@@ -19,6 +19,7 @@
   - [Calendar Actions](#calendar-actions) — get, create, update, delete, calendar view, rooms, meetings
   - [Contact Actions](#contact-actions) — get, create, update, delete
   - [Utility](#utility) — raw HTTP request, get calendars
+- [Known Limitations](#known-limitations)
 
 ## Overview
 
@@ -35,6 +36,8 @@ Get a client from triggers:
 ```python
 o365 = connectors.office365.get_client(connection_id="office365-conn")
 ```
+
+> **Limitation:** `Office365Client.http_request()` is currently not usable through this SDK because the underlying connector models `Method` and `Uri` as headers, and ARM `dynamicInvoke` does not forward them correctly. Prefer the typed client methods or the Microsoft Graph SDK for unsupported endpoints.
 
 ---
 
@@ -928,6 +931,8 @@ result = await o365.get_calendars()
 
 Send a raw Graph proxy HTTP request.
 
+> **Currently unsupported via this SDK.** The Office 365 connector expects `Method` and `Uri` as HTTP headers, but ARM `dynamicInvoke` drops those headers. Calls usually fail with `Empty Http Method provided.`
+
 **Parameters:**
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
@@ -938,8 +943,12 @@ Send a raw Graph proxy HTTP request.
 
 **Example:**
 ```python
-result = await o365.http_request(
-    method="GET",
-    uri="https://graph.microsoft.com/v1.0/me",
-)
+from msgraph import GraphServiceClient
+
+# Use Microsoft Graph directly for unsupported HTTP proxy scenarios.
+graph = GraphServiceClient(...)
 ```
+
+## Known Limitations
+
+- `http_request()` is currently unusable through ARM `dynamicInvoke`; use typed client methods or Microsoft Graph directly.

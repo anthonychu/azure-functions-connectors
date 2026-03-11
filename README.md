@@ -6,13 +6,21 @@ Connector bindings for Azure Functions (Python). Poll Azure managed connectors f
 
 ## Features
 
-- **Triggers** — react to new emails, calendar events, Salesforce records, and more
-- **Clients** — send emails, create events, manage contacts, and call any connector action
-- **Works with any Azure managed connector** — Office 365, Salesforce, SharePoint, Dynamics, and 500+ more
+- **Typed connector support** — Office 365 (triggers + client), SharePoint (triggers + client), Salesforce (triggers + client), Teams (client only)
+- **Generic connector support** — `generic_trigger()` and `ConnectorClient` work with Azure managed connectors beyond the typed helpers
+- **Clients** — send emails, create events, manage contacts, query CRM records, and call connector actions
 - **Strongly-typed** — `Office365Email`, `Office365Event` models with snake_case properties + dict access
 - **Automatic scale-out** — items dispatched via Storage Queue for parallel processing
 - **Cursor-based polling** — only new items returned, no duplicates
 - **Exponential backoff** — fast when active, quiet when idle
+
+## Supported Connectors
+
+- **Office 365 Outlook** — typed polling triggers and typed client
+- **SharePoint Online** — typed polling triggers and typed client
+- **Salesforce** — typed polling triggers and typed client
+- **Microsoft Teams** — typed client only; polling triggers are currently disabled because of a connector-side bug
+- **Generic Azure managed connectors** — use `connectors.generic_trigger(...)` and `connectors.get_client(...)`
 
 ## Quick Start
 
@@ -33,10 +41,10 @@ async def on_new_email(email: Office365Email):
     print(f"New email from {email.sender}: {email.subject}")
     print(f"Preview: {email.body_preview}")
 
-# Generic trigger — works with any connector (Salesforce, SharePoint, etc.)
+# Generic trigger — works with any managed connector
 @connectors.generic_trigger(
     connection_id="%SALESFORCE_CONNECTION_ID%",
-    trigger_path="/datasets/default/tables/Lead/onnewitems",
+    trigger_path="/trigger/datasets/default/tables/Lead/onnewitems",
 )
 async def on_new_lead(item: dict):
     print(f"New lead: {item['Name']}")
@@ -54,6 +62,12 @@ client = connectors.get_client(connection_id="%SALESFORCE_CONNECTION_ID%")
 
 async def example_generic():
     result = await client.invoke("GET", "/datasets/default/tables/Lead/items")
+
+# Teams is currently client-only
+teams = connectors.teams.get_client(connection_id="%TEAMS_CONNECTION_ID%")
+
+async def example_teams():
+    channels = await teams.list_channels("%TEAMS_TEAM_ID%")
 ```
 
 ## Installation
@@ -104,7 +118,7 @@ State (cursor, backoff) is persisted in **blob storage** so polling resumes acro
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `connection_id` | str | required | ARM resource ID of the API connection. Supports `%VAR%` / `$VAR` env var syntax. |
-| `trigger_path` | str | required | Connector trigger path (e.g., `/Mail/OnNewEmail`) |
+| `trigger_path` | str | required | Connector trigger path (e.g., `/v3/Mail/OnNewEmail`) |
 | `trigger_queries` | dict | `{}` | Query parameters for the trigger. Values support env var syntax. |
 | `min_interval` | int | `60` | Minimum polling interval in seconds (after items found) |
 | `max_interval` | int | `300` | Maximum polling interval in seconds (backoff cap) |
@@ -117,21 +131,35 @@ No explicit registration call needed — `FunctionsConnectors(app)` handles ever
 
 | Connector | Trigger | Path |
 |-----------|---------|------|
-| Office 365 | New email | `/Mail/OnNewEmail` |
+| Office 365 | New email | `/v3/Mail/OnNewEmail` |
 | Office 365 | New calendar event | `/datasets/calendars/v3/tables/{calendarId}/onnewitems` |
-| Salesforce | Record created | `/datasets/default/tables/{object}/onnewitems` |
-| Salesforce | Record modified | `/datasets/default/tables/{object}/onupdateditems` |
-| SharePoint | New list item | `/datasets/{siteUrl}/tables/{listId}/onnewitems` |
+| Salesforce | Record created | `/trigger/datasets/default/tables/{object}/onnewitems` |
+| Salesforce | Record modified | `/trigger/datasets/default/tables/{object}/onupdateditems` |
+| SharePoint | New list item | `/datasets/{doubleEncodedSiteUrl}/tables/{listId}/onnewitems` |
+
+`connectors.sharepoint.*` automatically handles SharePoint's required site URL double-encoding.
+
+## Known Limitations
+
+- **Teams triggers are currently unavailable** due to a managed connector bug; use `samples/teams/` for the timer + client workaround.
+- **Office 365 / Teams Graph `http_request()` actions do not work through ARM `dynamicInvoke`** because required `Method` and `Uri` headers are not forwarded.
+- **SharePoint generic paths require double-encoding**; the typed SharePoint helpers handle this automatically.
 
 ## Documentation
 
 - **[Office 365 Connector](docs/office365.md)** — 7 triggers, 31 client methods, typed models (`Office365Email`, `Office365Event`)
+- **[Microsoft Teams Connector](docs/teams.md)** — typed client, typed models, and the current trigger limitation/workaround
+- **[SharePoint Connector](docs/sharepoint.md)** — 4 triggers, typed models, client helpers, SharePoint encoding notes
+- **[Salesforce Connector](docs/salesforce.md)** — 3 triggers, typed models, client helpers
 - **[Generic APIs](docs/generic.md)** — `generic_trigger()`, `ConnectorClient`, `ConnectorItem`, architecture, RBAC
 - **[Setup & Production Guide](docs/setup.md)** — Creating connections, authentication, RBAC, local dev, deployment
 
 ## Samples
 
-See the [samples/](samples/) directory for complete working examples.
+- [samples/office365/](samples/office365/) — Office 365 triggers + typed client
+- [samples/sharepoint/](samples/sharepoint/) — SharePoint triggers + typed client
+- [samples/salesforce/](samples/salesforce/) — Salesforce triggers + typed client
+- [samples/teams/](samples/teams/) — Teams client-only workaround
 
 ## License
 

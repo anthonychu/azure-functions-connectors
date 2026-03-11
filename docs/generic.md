@@ -4,6 +4,7 @@
 
 - [Overview](#overview)
 - [FunctionsConnectors](#functionsconnectors)
+- [Typed Connector Helpers](#typed-connector-helpers)
 - [Generic Trigger](#generic-trigger)
   - [Signature](#signature)
   - [Parameters](#parameters)
@@ -19,6 +20,7 @@
   - [Subclassing pattern](#subclassing-pattern)
 - [Architecture](#architecture)
 - [RBAC](#rbac)
+- [Connector-specific Notes](#connector-specific-notes)
 
 ## Overview
 
@@ -54,6 +56,15 @@ Returns a generic `ConnectorClient` for invoking any connector action/operation 
 `connectors.office365` exposes Office 365-specific typed triggers and typed client helpers.  
 Use generic APIs when you need connector-agnostic behavior; use `office365` when you want typed Office 365 convenience methods.
 
+## Typed Connector Helpers
+
+`FunctionsConnectors` also exposes connector-specific helper properties:
+
+- `connectors.office365` — typed triggers + typed client
+- `connectors.salesforce` — typed triggers + typed client
+- `connectors.sharepoint` — typed triggers + typed client, with SharePoint site URL double-encoding handled for you
+- `connectors.teams` — typed client only (Teams polling triggers are unavailable because of a connector-side bug)
+
 ---
 
 ## Generic Trigger
@@ -75,7 +86,7 @@ connectors.generic_trigger(
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `connection_id` | `str` | required | ARM resource ID of the API connection. Supports env var resolution (`%VAR%`, `$VAR`). |
-| `trigger_path` | `str` | required | Connector trigger path (for example `/datasets/default/tables/Lead/onnewitems`). |
+| `trigger_path` | `str` | required | Connector trigger path (for example `/trigger/datasets/default/tables/Lead/onnewitems`). |
 | `trigger_queries` | `dict[str, str] \| None` | `None` | Query parameters sent with the trigger request. |
 | `min_interval` | `int` | `60` | Minimum poll interval (seconds). Must be `>= 1`. |
 | `max_interval` | `int` | `300` | Maximum backoff interval (seconds). Must be `>= min_interval`. |
@@ -101,7 +112,7 @@ connectors = fc.FunctionsConnectors(app)
 
 @connectors.generic_trigger(
     connection_id="%SALESFORCE_CONNECTION_ID%",
-    trigger_path="/datasets/default/tables/Lead/onnewitems",
+    trigger_path="/trigger/datasets/default/tables/Lead/onnewitems",
     trigger_queries={"$select": "Id,Name,Company,Email"},
 )
 async def on_new_lead(item: dict):
@@ -118,11 +129,13 @@ class SharePointListItem(ConnectorItem):
 
 @connectors.generic_trigger(
     connection_id="%SHAREPOINT_CONNECTION_ID%",
-    trigger_path="/datasets/{siteUrl}/tables/{listId}/onnewitems",
+    trigger_path="/datasets/https%253A%252F%252Fcontoso.sharepoint.com%252Fsites%252FEngineering/tables/%SHAREPOINT_LIST_ID%/onnewitems",
 )
 async def on_new_sp_item(item: SharePointListItem):
     print("New SharePoint item:", item.id, item.title)
 ```
+
+> For SharePoint, **generic** trigger and client paths must use the connector's required double-encoded site URL. Prefer `connectors.sharepoint.*` if you do not want to build those paths manually.
 
 ### Type hints for handler item
 
@@ -286,3 +299,9 @@ Equivalent broad role: **Logic App Contributor** (scoped appropriately).
 For implementation notes, see:
 - `README.md` (Prerequisites / RBAC)
 - `notes/generic-polling-orchestration.md` (RBAC / permissions)
+
+## Connector-specific Notes
+
+- **Teams:** the SDK exposes `connectors.teams.get_client(...)`, but no Teams polling trigger decorators because the connector returns `502 Unable to compute iso trigger state` after items are found.
+- **SharePoint:** typed SharePoint helpers automatically double-encode site URLs. Generic APIs require you to encode the site URL yourself.
+- **HTTP request proxy actions:** connectors that model `Method` / `Uri` as headers (notably Office 365 and Teams Graph proxy actions) do not work reliably through ARM `dynamicInvoke`. Prefer typed methods or the native SDK for those scenarios.

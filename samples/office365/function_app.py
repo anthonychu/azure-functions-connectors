@@ -43,3 +43,13 @@ async def on_new_event(event: Office365Event):
 async def on_event_changed(event: Office365Event):
     logging.info(f"[EVENT CHANGED] Subject: {event.subject}")
     logging.info(f"[EVENT CHANGED] Start: {event.start}")
+
+
+@app.timer_trigger(schedule="0 */10 * * * *", arg_name="timer", run_on_startup=True)
+async def query_office365(timer: func.TimerRequest):
+    client = connectors.office365.get_client("%OFFICE365_CONNECTION_ID%")
+    emails = await client.get_emails(folder="Inbox", top=5, unread_only=True)
+    logging.info(f"[GET EMAILS] fetched={len(emails)}")
+
+    calendars = await client.get_calendars()
+    logging.info(f"[GET CALENDARS] fetched={len(calendars)}")

@@ -1,6 +1,6 @@
 # Sample: Office 365 Triggers & Client
 
-This sample demonstrates Office 365 triggers (new email, flagged email, calendar events) and the typed client API.
+This sample demonstrates Office 365 triggers (new email, flagged email, calendar events) plus a timer-driven typed client example.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ This sample demonstrates Office 365 triggers (new email, flagged email, calendar
 
 ## How It Works
 
-The `@generic_connection_trigger` decorator registers a polling trigger for new emails.
-Behind the scenes, a timer function polls the Office 365 connector every minute and
-enqueues new emails to a Storage Queue. A queue-triggered function then calls your
-handler for each email.
+- `connectors.office365.*_trigger(...)` registers polling triggers for emails and calendar events.
+- The SDK adds an internal timer that polls the Office 365 connector and enqueues new items to Storage Queue.
+- Queue-triggered functions dispatch typed `Office365Email` / `Office365Event` payloads to your handlers.
+- A separate sample timer function shows how to use the typed `Office365Client` for read-only actions like `get_emails()` and `get_calendars()`.

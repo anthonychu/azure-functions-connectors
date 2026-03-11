@@ -8,10 +8,10 @@ from ._clients.teams import TeamsClient
 from ._decorator import FunctionsConnectors
 from ._models import ConnectorItem
 from ._registration import register_connector_triggers
-from ._triggers.office365 import Office365Email, Office365Event
+from ._triggers.office365 import Office365Email, Office365Event, Office365Triggers
 from ._triggers.salesforce import SalesforceRecord, SalesforceTriggers
 from ._triggers.sharepoint import SharePointFile, SharePointItem, SharePointTriggers
-from ._triggers.teams import TeamsChannel, TeamsMessage
+from ._triggers.teams import TeamsChannel, TeamsMessage, TeamsTriggers
 
 __all__ = [
     "ConnectorClient",
@@ -21,6 +21,7 @@ __all__ = [
     "Office365Client",
     "Office365Email",
     "Office365Event",
+    "Office365Triggers",
     "SalesforceClient",
     "SalesforceRecord",
     "SalesforceTriggers",
@@ -31,6 +32,7 @@ __all__ = [
     "TeamsChannel",
     "TeamsClient",
     "TeamsMessage",
+    "TeamsTriggers",
     "register_connector_triggers",
 ]
 

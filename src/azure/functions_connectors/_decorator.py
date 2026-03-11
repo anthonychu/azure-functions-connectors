@@ -44,11 +44,11 @@ class FunctionsConnectors:
         from ._triggers.office365 import Office365Triggers
         from ._triggers.salesforce import SalesforceTriggers
         from ._triggers.sharepoint import SharePointTriggers
-        from ._triggers.teams import TeamsTrigers
+        from ._triggers.teams import TeamsTriggers
         self.office365 = Office365Triggers(self)
         self.salesforce = SalesforceTriggers(self)
         self.sharepoint = SharePointTriggers(self)
-        self.teams = TeamsTrigers(self)
+        self.teams = TeamsTriggers(self)
 
         # Set module-level ref so poller/cleanup can access us
         global _active_connectors

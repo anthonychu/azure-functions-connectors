@@ -6,6 +6,7 @@ workaround to periodically check for new messages.
 """
 
 import logging
+
 import azure.functions as func
 import azure.functions_connectors as fc
 
@@ -25,7 +26,7 @@ async def check_teams_messages(timer: func.TimerRequest):
         logging.info(f"Channel: {ch.get('displayName')}")
 
     # Get recent messages from a specific channel
-    messages = await client.get_messages_from_channel(
+    messages = await client.get_messages(
         "%TEAMS_TEAM_ID%", "%TEAMS_CHANNEL_ID%"
     )
     for msg in messages:

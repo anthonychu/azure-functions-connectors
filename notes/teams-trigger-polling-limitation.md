@@ -81,7 +81,7 @@ Teams connector **actions** (non-trigger endpoints) work fine via `dynamicInvoke
 
 Since the connector's polling trigger is broken server-side, alternatives are:
 
-1. **Timer + Teams client** — Use a timer function with `TeamsClient.get_messages_from_channel()`
+1. **Timer + Teams client** — Use a timer function with `TeamsClient.get_messages()`
    and track state manually (last seen message timestamp/ID). This is the simplest and uses the
    same connection. **Recommended.**
 2. **Direct Graph API polling** — Use `GET /beta/teams/{teamId}/channels/{channelId}/messages/delta`
