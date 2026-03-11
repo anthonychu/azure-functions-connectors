@@ -146,11 +146,11 @@ class SharePointClient:
         return await self._client.invoke(
             "POST",
             f"/datasets/{encoded_site}/files",
-            body={
+            queries={
                 "folderPath": resolve_value(folder_path),
                 "name": resolve_value(file_name),
-                "fileContent": content,
             },
+            body=content,
         )
 
     async def list_folder(self, site_url: str, folder_id: str) -> dict:
