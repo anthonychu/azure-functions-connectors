@@ -34,18 +34,9 @@ Get a client from triggers:
 sp = connectors.sharepoint.get_client(connection_id="sharepoint-conn")
 ```
 
-## Important URL Encoding Note
+## Important: Site URL Encoding
 
-SharePoint dynamicInvoke paths require **double-encoded** site URLs.
-
-For example:
-
-- site URL: `https://microsoft.sharepoint.com/teams/MySite`
-- single-encoded: `https%3A%2F%2Fmicrosoft.sharepoint.com%2Fteams%2FMySite`
-- double-encoded: `https%253A%252F%252Fmicrosoft.sharepoint.com%252Fteams%252FMySite`
-
-This SDK handles that automatically for all SharePoint trigger and client methods.
-You should pass the plain site URL (or an env var like `%SHAREPOINT_SITE_URL%`).
+SharePoint site URLs require special encoding internally. **The SDK handles this automatically** — just pass the plain site URL (e.g., `https://contoso.sharepoint.com/sites/MySite`) or an env var reference (e.g., `%SHAREPOINT_SITE_URL%`). No manual encoding needed.
 
 ## Triggers
 

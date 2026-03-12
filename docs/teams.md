@@ -61,12 +61,7 @@ async def on_channel_mention(message: TeamsMessage):
     print("Mentioned in channel:", message.body_preview)
 ```
 
-Implementation detail: these triggers use action-based polling (`get_messages()`) and client-side `createdDateTime` cursor tracking behind the scenes. This is transparent to application code.
-
-Current trigger scope:
-
-- Triggers fire for **top-level channel posts only** (replies in threads do not trigger).
-- **Chat message triggers are not supported** by the Teams managed connector actions.
+> **Note:** Triggers fire for **top-level channel posts only**. Replies within threads and chat message triggers are not currently supported.
 
 ## Models
 
@@ -264,5 +259,5 @@ meeting = await client.create_meeting(
 
 ## Known Limitations
 
-- **Trigger scope limits:** only top-level channel posts trigger; replies in threads and chat messages are not currently supported.
-- **Graph HTTP proxy action is unavailable through `dynamicInvoke`:** the connector expects `Method` and `Uri` as headers, which ARM `dynamicInvoke` does not forward correctly. Use the Microsoft Graph SDK directly for unsupported endpoints.
+- **Trigger scope:** only top-level channel posts and @mentions are supported. Replies within threads and chat messages are not currently available.
+- **`http_request()` is not supported:** the connector requires parameters as HTTP headers that cannot be forwarded by this SDK. Use the typed client methods or the Microsoft Graph SDK for unsupported endpoints.

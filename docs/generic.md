@@ -49,7 +49,7 @@ FunctionsConnectors(app: func.FunctionApp)
 get_client(connection_id: str) -> ConnectorClient
 ```
 
-Returns a generic `ConnectorClient` for invoking any connector action/operation through `dynamicInvoke`.
+Returns a generic `ConnectorClient` for invoking any connector action.
 
 ### `office365` property
 
@@ -62,7 +62,7 @@ Use generic APIs when you need connector-agnostic behavior; use `office365` when
 
 - `connectors.office365` — typed triggers + typed client
 - `connectors.salesforce` — typed triggers + typed client
-- `connectors.sharepoint` — typed triggers + typed client, with SharePoint site URL double-encoding handled for you
+- `connectors.sharepoint` — typed triggers + typed client, with SharePoint site URL encoding handled for you
 - `connectors.teams` — typed triggers + typed client
 
 ---
@@ -93,12 +93,10 @@ connectors.generic_trigger(
 
 ### How it works
 
-1. Registration stores trigger config (`TriggerConfig`) and generates a deterministic instance ID.
-2. A single internal **timer trigger** (every minute, `runOnStartup=True`) polls all registered connector triggers.
-3. Poll results are persisted with cursor/backoff state in blob storage.
-4. New items are pushed to connector-specific storage queues.
-5. Queue-triggered processors dispatch each item to your handler.
-6. If your handler parameter is a `ConnectorItem` subclass, dict payloads are auto-wrapped into that model.
+1. Each decorator registers a trigger with the SDK.
+2. The SDK polls all registered triggers on a timer and tracks state (cursor, polling interval) automatically.
+3. New items are dispatched to your handler function for processing.
+4. If your handler parameter is a `ConnectorItem` subclass, items are auto-wrapped into that model.
 
 ### Example: Salesforce + SharePoint
 
@@ -135,7 +133,7 @@ async def on_new_sp_item(item: SharePointListItem):
     print("New SharePoint item:", item.id, item.title)
 ```
 
-> For SharePoint, **generic** trigger and client paths must use the connector's required double-encoded site URL. Prefer `connectors.sharepoint.*` if you do not want to build those paths manually.
+> For SharePoint, generic trigger/client paths require specially encoded site URLs. Use `connectors.sharepoint.*` instead to avoid manual encoding.
 
 ### Type hints for handler item
 
@@ -269,19 +267,17 @@ async def on_lead(lead: SalesforceLead):
 
 ## Architecture
 
-The runtime uses a **timer + blob + queue** pattern:
+The SDK uses a **timer + storage** pattern internally:
 
-1. **Timer trigger** polls each registered connector trigger.
-2. **Blob state** stores cursor + polling backoff metadata, so polling resumes safely across restarts/deployments.
-3. **Queue dispatch** fan-outs individual items to queue-triggered handlers for scalable parallel processing.
-
-This model keeps polling centralized while item processing scales out independently.
+1. A timer polls each registered connector trigger on a schedule.
+2. Cursor and polling state are persisted, so polling resumes safely across restarts and deployments.
+3. New items are dispatched to your handler functions for scalable parallel processing.
 
 ---
 
 ## RBAC
 
-Your Function App identity must be able to invoke and read API connections:
+Your Function App identity needs permission to invoke API connections:
 
 ```json
 {
@@ -293,15 +289,10 @@ Your Function App identity must be able to invoke and read API connections:
 }
 ```
 
-Scope this role to the target connection resource(s) or resource group.  
-Equivalent broad role: **Logic App Contributor** (scoped appropriately).
-
-For implementation notes, see:
-- `README.md` (Prerequisites / RBAC)
-- `notes/generic-polling-orchestration.md` (RBAC / permissions)
+Scope this role to the target connection resource(s) or resource group.
 
 ## Connector-specific Notes
 
-- **Teams:** `connectors.teams` exposes channel message triggers and a typed client. Trigger scope currently covers top-level channel posts (including mention detection); replies in threads and chat-message triggers are not supported.
-- **SharePoint:** typed SharePoint helpers automatically double-encode site URLs. Generic APIs require you to encode the site URL yourself.
-- **HTTP request proxy actions:** connectors that model `Method` / `Uri` as headers (notably Office 365 and Teams Graph proxy actions) do not work reliably through ARM `dynamicInvoke`. Prefer typed methods or the native SDK for those scenarios.
+- **Teams:** triggers support top-level channel posts and @mentions. Replies within threads and chat message triggers are not currently available.
+- **SharePoint:** the typed helpers handle site URL encoding automatically. If using generic APIs, you must encode the site URL yourself.
+- **`http_request()` actions:** the raw HTTP request escape hatch on Office 365, Teams, and SharePoint connectors is not currently supported. Use the typed client methods or the native SDK (e.g., Microsoft Graph SDK) instead.

@@ -19,4 +19,4 @@ This sample demonstrates SharePoint Online triggers (new list items, updated fil
 ## Notes
 
 - Use the full site URL (for example, `https://contoso.sharepoint.com/sites/MySite`) in `SHAREPOINT_SITE_URL`.
-- The SDK automatically applies SharePoint's required double-encoding for dynamicInvoke paths.
+- The SDK automatically applies SharePoint's required encoding for API paths.

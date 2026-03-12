@@ -81,7 +81,7 @@ The connection stores the OAuth token and is **per-user**.
 
 ## 3. RBAC — Granting Your Function App Access
 
-Your Function App managed identity needs permission to call `dynamicInvoke` on the connection.
+Your Function App managed identity needs permission to invoke actions on the connection.
 
 ### Option A: Custom Role (Recommended — Least Privilege)
 
@@ -182,16 +182,16 @@ Set `OFFICE365_CONNECTION_ID` (or equivalent) in the Function App's Application 
 
 ### Scaling Considerations
 
-- **Timer function** is singleton (one instance polls at a time)
-- **Queue functions** scale out automatically based on queue depth
+- Polling is centralized (one instance polls at a time)
+- Item processing scales out automatically
 - Polling interval defaults to 1 minute (configurable)
-- Each trigger's state (cursor + backoff) is stored in blob storage and survives restarts
+- Trigger state survives restarts and deployments
 
 ## 7. Known Limitations
 
-- **Teams trigger scope is currently limited:** Teams triggers support new top-level channel posts and @mentions. Replies in threads and chat-message triggers are not currently supported.
-- **HTTP proxy actions that require header-based `Method` / `Uri` do not work through ARM `dynamicInvoke`:** this affects the Office 365 and Teams Graph proxy actions. Use typed client methods or the native SDK instead.
-- **SharePoint paths require double-encoded site URLs:** `connectors.sharepoint.*` handles this automatically, but generic trigger/client paths must be encoded manually.
+- **Teams triggers:** support top-level channel posts and @mentions only. Replies within threads and chat message triggers are not currently available.
+- **`http_request()` actions:** the raw HTTP request method on Office 365, Teams, and SharePoint connectors is not currently supported. Use the typed client methods or the Microsoft Graph SDK instead.
+- **SharePoint site URLs:** the typed `connectors.sharepoint.*` helpers handle encoding automatically, but generic trigger/client paths require manual encoding.
 
 ## 8. Available Connectors
 

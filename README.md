@@ -114,11 +114,11 @@ pip install -e .
 
 ## How It Works
 
-1. A **timer function** fires every minute (configurable) and polls each registered connector trigger
-2. New items are enqueued to an **Azure Storage Queue**
-3. A **queue-triggered function** calls your handler for each item, scaling out automatically
+1. The SDK polls each registered connector trigger on a schedule
+2. New items are dispatched to your handler functions
+3. Processing scales out automatically
 
-State (cursor, backoff) is persisted in **blob storage** so polling resumes across restarts.
+Polling state (cursor, interval) is persisted so triggers resume across restarts and deployments.
 
 ## Configuration
 
@@ -146,13 +146,13 @@ No explicit registration call needed — `FunctionsConnectors(app)` handles ever
 | Salesforce | Record modified | `/trigger/datasets/default/tables/{object}/onupdateditems` |
 | SharePoint | New list item | `/datasets/{doubleEncodedSiteUrl}/tables/{listId}/onnewitems` |
 
-`connectors.sharepoint.*` automatically handles SharePoint's required site URL double-encoding.
+`connectors.sharepoint.*` handles SharePoint's required site URL encoding automatically.
 
 ## Known Limitations
 
-- **Teams trigger support currently includes top-level channel posts and @mentions**. Reply events within threads and chat-message triggers are not available.
-- **Office 365 / Teams Graph `http_request()` actions do not work through ARM `dynamicInvoke`** because required `Method` and `Uri` headers are not forwarded.
-- **SharePoint generic paths require double-encoding**; the typed SharePoint helpers handle this automatically.
+- **Teams triggers** support top-level channel posts and @mentions. Replies within threads and chat message triggers are not currently available.
+- **`http_request()` actions** on Office 365, Teams, and SharePoint connectors are not currently supported. Use the typed client methods or the Microsoft Graph SDK instead.
+- **SharePoint generic paths** require special site URL encoding; the typed `connectors.sharepoint.*` helpers handle this automatically.
 
 ## Documentation
 
