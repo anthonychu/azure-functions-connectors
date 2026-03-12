@@ -18,7 +18,9 @@ connectors = fc.FunctionsConnectors(app)
 async def on_channel_message(msg: TeamsMessage):
     """Fires when a new post is made in a Teams channel."""
     logging.info(f"[CHANNEL MSG] From: {msg.sender}")
-    logging.info(f"[CHANNEL MSG] Body: {msg.body_preview}")
+    body = msg.body
+    content = body.get("content", "") if isinstance(body, dict) else str(body)
+    logging.info(f"[CHANNEL MSG] Content: {content[:200]}")
 
 
 @connectors.teams.channel_mention_trigger(
@@ -29,7 +31,9 @@ async def on_channel_message(msg: TeamsMessage):
 async def on_mention(msg: TeamsMessage):
     """Fires when you are @mentioned in a Teams channel post."""
     logging.info(f"[MENTIONED] From: {msg.sender}")
-    logging.info(f"[MENTIONED] Body: {msg.body_preview}")
+    body = msg.body
+    content = body.get("content", "") if isinstance(body, dict) else str(body)
+    logging.info(f"[MENTIONED] Content: {content[:200]}")
 
 
 @app.timer_trigger(schedule="0 */10 * * * *", arg_name="timer",

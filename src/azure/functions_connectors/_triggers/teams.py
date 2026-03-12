@@ -128,13 +128,18 @@ class TeamsTriggers:
         from .._env import resolve_value
         from .._poll_action import poll_channel_messages
 
+        resolved_conn = resolve_value(connection_id)
         resolved_team = resolve_value(team_id)
         resolved_channel = resolve_value(channel_id)
-        poll_fn = partial(
+        # Bind all args except cursor — poller calls poll_fn(connection_id, cursor)
+        # but connection_id is already baked in, so wrap to only take cursor.
+        _bound = partial(
             poll_channel_messages,
+            connection_id=resolved_conn,
             team_id=resolved_team,
             channel_id=resolved_channel,
         )
+        poll_fn = lambda conn_id, cur: _bound(cursor=cur)
 
         return self._parent.generic_trigger(
             connection_id=connection_id,
@@ -155,14 +160,17 @@ class TeamsTriggers:
         from .._env import resolve_value
         from .._poll_action import poll_channel_messages
 
+        resolved_conn = resolve_value(connection_id)
         resolved_team = resolve_value(team_id)
         resolved_channel = resolve_value(channel_id)
-        poll_fn = partial(
+        _bound = partial(
             poll_channel_messages,
+            connection_id=resolved_conn,
             team_id=resolved_team,
             channel_id=resolved_channel,
             mention_only=True,
         )
+        poll_fn = lambda conn_id, cur: _bound(cursor=cur)
 
         return self._parent.generic_trigger(
             connection_id=connection_id,
