@@ -4,7 +4,7 @@ This sample demonstrates SharePoint Online triggers (new list items, updated fil
 
 ## Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - Azure Functions Core Tools v4
 - An Azure API Connection for SharePoint Online (authenticated)
 - A managed identity or service principal with `Microsoft.Web/connections/dynamicInvoke/action` on the connection

@@ -6,7 +6,7 @@ setup(
     description="Azure managed connector bindings for Azure Functions",
     packages=find_namespace_packages(where="src"),
     package_dir={"": "src"},
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=[
         "azure-functions>=1.17.0",
         "azure-identity>=1.15.0",

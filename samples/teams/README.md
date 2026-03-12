@@ -8,7 +8,7 @@ are unavailable.
 
 ## Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - Azure Functions Core Tools v4
 - An Azure API Connection for Microsoft Teams (authenticated via OAuth)
 

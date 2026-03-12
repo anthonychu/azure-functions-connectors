@@ -2,7 +2,7 @@
 name = "azure-functions-connectors"
 version = "0.1.0"
 description = "Azure managed connector bindings for Azure Functions"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 dependencies = [
     "azure-functions>=1.17.0",

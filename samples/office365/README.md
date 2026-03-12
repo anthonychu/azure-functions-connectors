@@ -4,7 +4,7 @@ This sample demonstrates Office 365 triggers (new email, flagged email, calendar
 
 ## Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - Azure Functions Core Tools v4
 - An Azure API Connection for Office 365 (authenticated via OAuth)
 - A managed identity or service principal with `Microsoft.Web/connections/dynamicInvoke/action` on the connection

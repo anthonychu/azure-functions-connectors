@@ -4,7 +4,7 @@ This sample demonstrates Salesforce triggers (new Contact, updated Opportunity) 
 
 ## Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - Azure Functions Core Tools v4
 - An Azure API Connection for Salesforce (authenticated via OAuth)
 - A managed identity or service principal with `Microsoft.Web/connections/dynamicInvoke/action` on the connection
