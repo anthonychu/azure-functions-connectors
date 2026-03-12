@@ -114,11 +114,37 @@ pip install -e .
 
 ## How It Works
 
-1. The SDK polls each registered connector trigger on a schedule
-2. New items are dispatched to your handler functions
-3. Processing scales out automatically
+The SDK uses **cursor-based polling** to detect new items from connectors:
+
+1. Each trigger is polled on a schedule. On the first poll, the SDK establishes a **cursor** that marks the current point in time.
+2. On subsequent polls, only items created after the cursor are returned. The cursor advances automatically.
+3. When new items are found, they're dispatched to your handler function. Processing scales out automatically.
+4. When no new items are found, the SDK uses **exponential backoff** — starting at `min_interval` and doubling up to `max_interval`. This keeps polling fast when data is flowing and quiet when idle.
+5. When items are found, the interval resets back to `min_interval`.
 
 Polling state (cursor, interval) is persisted so triggers resume across restarts and deployments.
+
+### Polling intervals
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `min_interval` | `60` seconds | Polling interval after items are found (fastest rate) |
+| `max_interval` | `300` seconds | Maximum polling interval when idle (backoff cap) |
+
+These can be configured on `generic_trigger()`:
+
+```python
+@connectors.generic_trigger(
+    connection_id="%CONNECTION_ID%",
+    trigger_path="/trigger/path",
+    min_interval=30,   # poll every 30s after finding items
+    max_interval=120,  # cap idle polling at 2 minutes
+)
+async def on_item(item: dict):
+    ...
+```
+
+Typed triggers (e.g., `office365.new_email_trigger()`) use the defaults (60s / 300s).
 
 ## Configuration
 
@@ -129,7 +155,7 @@ Polling state (cursor, interval) is persisted so triggers resume across restarts
 | `connection_id` | str | required | ARM resource ID of the API connection. Supports `%VAR%` / `$VAR` env var syntax. |
 | `trigger_path` | str | required | Connector trigger path (e.g., `/v3/Mail/OnNewEmail`) |
 | `trigger_queries` | dict | `{}` | Query parameters for the trigger. Values support env var syntax. |
-| `min_interval` | int | `60` | Minimum polling interval in seconds (after items found) |
+| `min_interval` | int | `60` | Polling interval in seconds after items are found |
 | `max_interval` | int | `300` | Maximum polling interval in seconds (backoff cap) |
 
 ### Registration

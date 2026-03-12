@@ -88,15 +88,31 @@ connectors.generic_trigger(
 | `connection_id` | `str` | required | ARM resource ID of the API connection. Supports env var resolution (`%VAR%`, `$VAR`). |
 | `trigger_path` | `str` | required | Connector trigger path (for example `/trigger/datasets/default/tables/Lead/onnewitems`). |
 | `trigger_queries` | `dict[str, str] \| None` | `None` | Query parameters sent with the trigger request. |
-| `min_interval` | `int` | `60` | Minimum poll interval (seconds). Must be `>= 1`. |
-| `max_interval` | `int` | `300` | Maximum backoff interval (seconds). Must be `>= min_interval`. |
+| `min_interval` | `int` | `60` | Polling interval (seconds) after items are found. Must be `>= 1`. |
+| `max_interval` | `int` | `300` | Maximum polling interval (seconds) when idle. Must be `>= min_interval`. |
 
-### How it works
+### How polling works
 
-1. Each decorator registers a trigger with the SDK.
-2. The SDK polls all registered triggers on a timer and tracks state (cursor, polling interval) automatically.
-3. New items are dispatched to your handler function for processing.
-4. If your handler parameter is a `ConnectorItem` subclass, items are auto-wrapped into that model.
+Triggers use **cursor-based polling** with **exponential backoff**:
+
+1. On the first poll, a cursor is established marking the current point in time. No items are returned.
+2. On subsequent polls, the connector returns only items created since the cursor.
+3. When items are found, the polling interval resets to `min_interval` (default: 60 seconds).
+4. When no items are found, the interval doubles each cycle up to `max_interval` (default: 300 seconds).
+5. If your handler parameter is a `ConnectorItem` subclass, items are auto-wrapped into that model.
+
+Example with custom intervals:
+
+```python
+@connectors.generic_trigger(
+    connection_id="%CONNECTION_ID%",
+    trigger_path="/trigger/datasets/default/tables/Lead/onnewitems",
+    min_interval=30,   # poll every 30s when active
+    max_interval=120,  # cap at 2 minutes when idle
+)
+async def on_new_lead(item: dict):
+    print(item["Name"])
+```
 
 ### Example: Salesforce + SharePoint
 
