@@ -66,6 +66,7 @@ class FunctionsConnectors:
         trigger_queries: dict[str, str] | None = None,
         min_interval: int = 60,
         max_interval: int = 300,
+        poll_function: Callable | None = None,
     ) -> Callable:
         """Register a function as a connector-trigger handler."""
 
@@ -83,6 +84,7 @@ class FunctionsConnectors:
                 trigger_queries=trigger_queries or {},
                 min_interval=min_interval,
                 max_interval=max_interval,
+                poll_function=poll_function,
             )
             registration = TriggerRegistration(config=config, handler=user_func)
             self._registered_triggers.append(registration)

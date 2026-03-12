@@ -1,14 +1,8 @@
-"""Teams connector item models and client factory.
-
-Note: Teams polling triggers are NOT supported due to a connector-side bug
-(502 "Unable to compute iso trigger state" when items are found).
-Only the Teams client (actions) is available. See
-notes/teams-trigger-polling-limitation.md for details.
-"""
+"""Teams connector item models, action-based triggers, and client factory."""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import Callable, TYPE_CHECKING
 
 from .._models import ConnectorItem
 
@@ -107,11 +101,10 @@ class TeamsChannel(ConnectorItem):
 
 
 class TeamsTriggers:
-    """Teams client factory.
+    """Teams typed triggers and client factory.
 
-    Note: Teams polling triggers are not available due to a connector-side
-    bug. Use ``get_client()`` to access Teams actions (messages, channels,
-    teams, chats, tags, members, meetings).
+    Triggers use action-based polling via ``get_messages`` to avoid broken
+    native Teams polling trigger endpoints.
     """
 
     def __init__(self, parent: FunctionsConnectors) -> None:
@@ -122,6 +115,61 @@ class TeamsTriggers:
         from .._clients.teams import TeamsClient
 
         return TeamsClient(ConnectorClient(connection_id))
+
+    def new_channel_message_trigger(
+        self,
+        connection_id: str,
+        team_id: str,
+        channel_id: str,
+    ) -> Callable:
+        """Trigger when a new post is made in a Teams channel."""
+        from functools import partial
+
+        from .._env import resolve_value
+        from .._poll_action import poll_channel_messages
+
+        resolved_team = resolve_value(team_id)
+        resolved_channel = resolve_value(channel_id)
+        poll_fn = partial(
+            poll_channel_messages,
+            team_id=resolved_team,
+            channel_id=resolved_channel,
+        )
+
+        return self._parent.generic_trigger(
+            connection_id=connection_id,
+            trigger_path=f"/action-poll/teams/{resolved_team}/channels/{resolved_channel}/messages",
+            trigger_queries={},
+            poll_function=poll_fn,
+        )
+
+    def channel_mention_trigger(
+        self,
+        connection_id: str,
+        team_id: str,
+        channel_id: str,
+    ) -> Callable:
+        """Trigger when you are @mentioned in a Teams channel post."""
+        from functools import partial
+
+        from .._env import resolve_value
+        from .._poll_action import poll_channel_messages
+
+        resolved_team = resolve_value(team_id)
+        resolved_channel = resolve_value(channel_id)
+        poll_fn = partial(
+            poll_channel_messages,
+            team_id=resolved_team,
+            channel_id=resolved_channel,
+            mention_only=True,
+        )
+
+        return self._parent.generic_trigger(
+            connection_id=connection_id,
+            trigger_path=f"/action-poll/teams/{resolved_team}/channels/{resolved_channel}/mentions",
+            trigger_queries={},
+            poll_function=poll_fn,
+        )
 
 
 # Backward-compatible alias for the original typo'ed class name.

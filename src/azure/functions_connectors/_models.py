@@ -28,6 +28,7 @@ class TriggerConfig:
     trigger_queries: dict[str, str] = field(default_factory=dict)
     min_interval: int = 60
     max_interval: int = 300
+    poll_function: Callable[[str, str | None], "PollResult"] | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -35,7 +36,10 @@ class TriggerConfig:
 # ---------------------------------------------------------------------------
 
 def compute_structural_hash(config: TriggerConfig) -> str:
-    """SHA-256 of connection_id + trigger_path + trigger_queries."""
+    """SHA-256 of connection_id + trigger_path + trigger_queries.
+
+    Runtime callables (e.g. poll_function) are intentionally excluded.
+    """
     payload = json.dumps(
         {
             "connection_id": config.connection_id,

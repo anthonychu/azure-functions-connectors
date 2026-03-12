@@ -1,10 +1,10 @@
-# Sample: Microsoft Teams Client
+# Sample: Microsoft Teams Triggers + Client
 
-This sample demonstrates using the Teams client API on a timer to periodically
-check for new channel messages.
+This sample demonstrates Teams channel triggers and Teams client API usage.
 
-> **Note:** Teams polling triggers are not currently supported due to a
-> connector-side bug. This sample uses a timer + client workaround instead.
+Teams channel message triggers are implemented with action-based polling
+(`get_messages`) so they work even when native Teams polling trigger endpoints
+are unavailable.
 
 ## Prerequisites
 
@@ -18,6 +18,12 @@ check for new channel messages.
 2. Fill in your Teams connection resource ID, team ID, and channel ID
 3. Install dependencies: `pip install -r requirements.txt`
 4. Run: `func start`
+
+## Included functions
+
+- `on_channel_message`: fires on new channel posts
+- `on_mention`: fires when your account is mentioned in a channel post
+- `query_teams`: periodic Teams client usage example (list channels)
 
 To find your team and channel IDs, use the Teams client:
 ```python

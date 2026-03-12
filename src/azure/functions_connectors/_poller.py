@@ -114,9 +114,14 @@ async def _poll_single_trigger(trigger: TriggerRegistration) -> None:
 
         # -- poll (sync call -> run in thread) -------------------------------
         cursor = state.cursor if state else None
-        result: PollResult = await asyncio.to_thread(
-            poll_trigger, connection_id, trigger_path, trigger_queries, cursor
-        )
+        if trigger.config.poll_function is not None:
+            result = await asyncio.to_thread(
+                trigger.config.poll_function, connection_id, cursor
+            )
+        else:
+            result = await asyncio.to_thread(
+                poll_trigger, connection_id, trigger_path, trigger_queries, cursor
+            )
 
         # -- build new state -------------------------------------------------
         new_state = state if state is not None else TriggerState()
