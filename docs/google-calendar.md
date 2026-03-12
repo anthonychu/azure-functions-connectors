@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Finding Your IDs](#finding-your-ids)
 - [Triggers](#triggers)
   - [new_event_trigger](#new_event_trigger)
   - [updated_event_trigger](#updated_event_trigger)
@@ -26,6 +27,43 @@ The Google Calendar connector provides:
 ```python
 client = connectors.googlecalendar.get_client("%GOOGLE_CALENDAR_CONNECTION_ID%")
 ```
+
+## Finding Your IDs
+
+### Connection ID
+
+The `connection_id` is the full ARM resource ID of your API Connection in Azure:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+To find it:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Navigate to your resource group
+3. Find your API Connection resource
+4. The resource ID is in the **Properties** blade, or construct it from your subscription ID, resource group name, and connection name
+
+Alternatively, use the CLI:
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store it as an app setting (e.g., `GOOGLE_CALENDAR_CONNECTION_ID`) and reference it with `%GOOGLE_CALENDAR_CONNECTION_ID%` in your trigger decorators.
+
+### Calendar ID
+
+The `calendar_id` is typically your email address (e.g., `user@gmail.com`) or `primary` for your default calendar.
+
+Use the client to discover calendar IDs:
+
+```python
+client = connectors.google_calendar.get_client("%GOOGLE_CALENDAR_CONNECTION_ID%")
+calendars = await client.list_calendars()
+for cal in calendars.get("items", []):
+    print(f"{cal.get('summary')}: {cal.get('id')}")
+```
+
 
 ## Triggers
 

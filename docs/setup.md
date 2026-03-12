@@ -52,7 +52,29 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
 }
 ```
 
-## 2. Authenticating the Connection
+## 2. Finding Connection IDs
+
+Every connector trigger/client uses a `connection_id` that points to your API Connection ARM resource:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+You can find this in Azure Portal:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Go to your resource group
+3. Open the API Connection resource
+4. Copy the **Resource ID** from the **Properties** blade
+
+Or use Azure CLI:
+
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store the value in Function App settings (for example, `OFFICE365_CONNECTION_ID`) and reference it in code with `%OFFICE365_CONNECTION_ID%`.
+
+## 3. Authenticating the Connection
 
 OAuth connectors (like Office 365) require user consent after creation. The connection starts in an **Unauthenticated** state.
 
@@ -79,7 +101,7 @@ Open the returned `link` URL in a browser, sign in, and the connection will be a
 
 The connection stores the OAuth token and is **per-user**.
 
-## 3. RBAC — Granting Your Function App Access
+## 4. RBAC — Granting Your Function App Access
 
 Your Function App managed identity needs permission to invoke actions on the connection.
 
@@ -118,7 +140,7 @@ az role assignment create \
 
 **Warning:** If scoped to a resource group that also contains a Function App + Storage Account, Logic App Contributor grants `storageAccounts/listkeys` access. Use the custom role instead.
 
-## 4. App Settings
+## 5. App Settings
 
 | Setting | Required | Description |
 |---------|----------|-------------|
@@ -132,7 +154,7 @@ For local development:
 - Run Azurite via Docker:
   `docker run -d --rm --name azurite -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite azurite --skipApiVersionCheck --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0`
 
-## 5. Local Development
+## 6. Local Development
 
 ```bash
 # 1. Start Azurite
@@ -156,7 +178,7 @@ func start
 
 For local development, you still need a real Azure API Connection (created in Azure Portal). The connection stores the OAuth token — Azurite is only used for the package's internal blob/queue storage.
 
-## 6. Production Deployment
+## 7. Production Deployment
 
 ### Deploy the Function App
 
@@ -172,7 +194,7 @@ azure-functions-connectors @ git+https://github.com/anthonychu/azure-functions-c
 az functionapp identity assign --name <app-name> --resource-group <rg>
 ```
 
-### Grant RBAC (see section 3)
+### Grant RBAC (see section 4)
 
 ### App Settings
 
@@ -187,13 +209,13 @@ Set `OFFICE365_CONNECTION_ID` (or equivalent) in the Function App's Application 
 - Polling interval defaults to 1 minute (configurable)
 - Trigger state survives restarts and deployments
 
-## 7. Known Limitations
+## 8. Known Limitations
 
 - **Teams triggers:** support top-level channel posts and @mentions only. Replies within threads and chat message triggers are not currently available.
 - **`http_request()` actions:** the raw HTTP request method on Office 365, Teams, and SharePoint connectors is not currently supported. Use the typed client methods or the Microsoft Graph SDK instead.
 - **SharePoint site URLs:** the typed `connectors.sharepoint.*` helpers handle encoding automatically, but generic trigger/client paths require manual encoding.
 
-## 8. Available Connectors
+## 9. Available Connectors
 
 Any Azure managed API connector can be used with `generic_trigger()` and `get_client()`. Popular options:
 

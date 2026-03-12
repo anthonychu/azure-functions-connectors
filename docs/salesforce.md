@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Finding Your IDs](#finding-your-ids)
 - [Triggers](#triggers)
   - [new_item_trigger](#new_item_trigger)
   - [updated_item_trigger](#updated_item_trigger)
@@ -31,6 +32,45 @@ sf = connectors.salesforce.get_client(connection_id="salesforce-conn")
 ```
 
 ---
+
+## Finding Your IDs
+
+### Connection ID
+
+The `connection_id` is the full ARM resource ID of your API Connection in Azure:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+To find it:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Navigate to your resource group
+3. Find your API Connection resource
+4. The resource ID is in the **Properties** blade, or construct it from your subscription ID, resource group name, and connection name
+
+Alternatively, use the CLI:
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store it as an app setting (e.g., `SALESFORCE_CONNECTION_ID`) and reference it with `%SALESFORCE_CONNECTION_ID%` in your trigger decorators.
+
+### Table (Object) Name
+
+The `table` parameter is the Salesforce API name of the object:
+- Standard objects: `account`, `contact`, `lead`, `opportunity`, `case`
+- Custom objects: use the API name (e.g., `Custom_Object__c`)
+
+Use the client to discover available tables:
+
+```python
+client = connectors.salesforce.get_client("%SALESFORCE_CONNECTION_ID%")
+tables = await client.get_tables()
+for t in tables.get("value", []):
+    print(f"{t.get('DisplayName')}: {t.get('Name')}")
+```
+
 
 ## Triggers
 

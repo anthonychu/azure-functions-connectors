@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Finding Your IDs](#finding-your-ids)
 - [Triggers](#triggers)
 - [Models](#models)
   - [TeamsMessage](#teamsmessage)
@@ -33,6 +34,68 @@ The Teams connector currently provides:
 ```python
 teams = connectors.teams.get_client(connection_id="%TEAMS_CONNECTION_ID%")
 ```
+
+## Finding Your IDs
+
+### Connection ID
+
+The `connection_id` is the full ARM resource ID of your API Connection in Azure:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+To find it:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Navigate to your resource group
+3. Find your API Connection resource
+4. The resource ID is in the **Properties** blade, or construct it from your subscription ID, resource group name, and connection name
+
+Alternatively, use the CLI:
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store it as an app setting (e.g., `TEAMS_CONNECTION_ID`) and reference it with `%TEAMS_CONNECTION_ID%` in your trigger decorators.
+
+### Team ID and Channel ID
+
+Use the Teams client to discover your team and channel IDs:
+
+```python
+client = connectors.teams.get_client("%TEAMS_CONNECTION_ID%")
+
+# List your teams
+teams = await client.list_teams()
+for t in teams:
+    print(f"{t.get('displayName')}: {t.get('id')}")
+
+# List channels in a team
+channels = await client.list_channels(team_id="your-team-id")
+for ch in channels:
+    print(f"{ch.get('displayName')}: {ch.get('id')}")
+```
+
+Or use the CLI:
+```bash
+# Set up variables
+CONN_ID="/subscriptions/.../providers/Microsoft.Web/connections/teams"
+TOKEN=$(az account get-access-token --resource https://management.azure.com --query accessToken -o tsv)
+
+# List teams
+curl -s -X POST "https://management.azure.com${CONN_ID}/dynamicInvoke?api-version=2016-06-01" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"request":{"method":"GET","path":"/beta/me/joinedTeams","queries":{}}}' | jq '.response.body.value[] | {displayName, id}'
+
+# List channels (replace TEAM_ID)
+curl -s -X POST "https://management.azure.com${CONN_ID}/dynamicInvoke?api-version=2016-06-01" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"request":{"method":"GET","path":"/beta/groups/TEAM_ID/channels","queries":{}}}' | jq '.response.body.value[] | {displayName, id}'
+```
+
+Team IDs look like: `f9beb78b-5f1b-4819-a5a0-dabdb6805b12`
+Channel IDs look like: `19:abc123...@thread.tacv2`
+
 
 ## Triggers
 

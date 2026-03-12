@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Finding Your IDs](#finding-your-ids)
 - [Triggers](#triggers)
 - [Models](#models)
   - [GmailEmail](#gmailemail)
@@ -24,6 +25,30 @@ gmail = connectors.gmail.get_client(connection_id="%GMAIL_CONNECTION_ID%")
 ```
 
 Gmail is **client only** in this SDK. No polling trigger decorators are available.
+
+## Finding Your IDs
+
+### Connection ID
+
+The `connection_id` is the full ARM resource ID of your API Connection in Azure:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+To find it:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Navigate to your resource group
+3. Find your API Connection resource
+4. The resource ID is in the **Properties** blade, or construct it from your subscription ID, resource group name, and connection name
+
+Alternatively, use the CLI:
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store it as an app setting (e.g., `GMAIL_CONNECTION_ID`) and reference it with `%GMAIL_CONNECTION_ID%` in your decorators.
+
 
 ## Triggers
 

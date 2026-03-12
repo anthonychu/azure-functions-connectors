@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Finding Your IDs](#finding-your-ids)
 - [Important URL Encoding Note](#important-url-encoding-note)
 - [Triggers](#triggers)
   - [new_item_trigger](#new_item_trigger)
@@ -33,6 +34,53 @@ Get a client from triggers:
 ```python
 sp = connectors.sharepoint.get_client(connection_id="sharepoint-conn")
 ```
+
+## Finding Your IDs
+
+### Connection ID
+
+The `connection_id` is the full ARM resource ID of your API Connection in Azure:
+
+```
+/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Web/connections/{connection-name}
+```
+
+To find it:
+1. Open the [Azure Portal](https://portal.azure.com)
+2. Navigate to your resource group
+3. Find your API Connection resource
+4. The resource ID is in the **Properties** blade, or construct it from your subscription ID, resource group name, and connection name
+
+Alternatively, use the CLI:
+```bash
+az resource list --resource-group {rg} --resource-type Microsoft.Web/connections --query "[].id" -o tsv
+```
+
+Store it as an app setting (e.g., `SHAREPOINT_CONNECTION_ID`) and reference it with `%SHAREPOINT_CONNECTION_ID%` in your trigger decorators.
+
+### Site URL
+
+The `site_url` is the full URL of your SharePoint site, e.g.:
+- `https://contoso.sharepoint.com/sites/MySite`
+- `https://contoso.sharepoint.com/teams/Engineering`
+
+Find it by opening your SharePoint site in a browser — the URL in the address bar up to the site name.
+
+### List ID
+
+Lists are identified by their GUID. Use the client to discover list IDs:
+
+```python
+client = connectors.sharepoint.get_client("%SHAREPOINT_CONNECTION_ID%")
+
+# List all lists/libraries on a site
+lists = await client.get_all_lists(site_url="%SHAREPOINT_SITE_URL%")
+for lst in lists.get("value", []):
+    print(f"{lst.get('DisplayName')}: {lst.get('Name')}")
+```
+
+List IDs look like: `52b22385-2fbe-482c-9095-0d2611b0064e`
+
 
 ## Important: Site URL Encoding
 
