@@ -84,13 +84,13 @@ CONN_ID="/subscriptions/.../providers/Microsoft.Web/connections/teams"
 az rest --method POST \
   --url "https://management.azure.com${CONN_ID}/dynamicInvoke?api-version=2016-06-01" \
   --body '{"request":{"method":"GET","path":"/beta/me/joinedTeams","queries":{}}}' \
-  --query 'response.body.value[].{name:displayName, id:id}' -o table
+  --query 'response.body.value[].{name:displayName, id:id}' -o tsv
 
 # List channels (replace TEAM_ID)
 az rest --method POST \
   --url "https://management.azure.com${CONN_ID}/dynamicInvoke?api-version=2016-06-01" \
   --body '{"request":{"method":"GET","path":"/beta/groups/TEAM_ID/channels","queries":{}}}' \
-  --query 'response.body.value[].{name:displayName, id:id}' -o table
+  --query 'response.body.value[].{name:displayName, id:id}' -o tsv
 ```
 
 Team IDs look like: `f9beb78b-5f1b-4819-a5a0-dabdb6805b12`
