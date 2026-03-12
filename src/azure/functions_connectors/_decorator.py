@@ -41,10 +41,14 @@ class FunctionsConnectors:
         self._timer_registered = False
 
         # Typed trigger builders
+        from ._triggers.gmail import GmailTriggers
+        from ._triggers.googlecalendar import GoogleCalendarTriggers
         from ._triggers.office365 import Office365Triggers
         from ._triggers.salesforce import SalesforceTriggers
         from ._triggers.sharepoint import SharePointTriggers
         from ._triggers.teams import TeamsTriggers
+        self.gmail = GmailTriggers(self)
+        self.google_calendar = GoogleCalendarTriggers(self)
         self.office365 = Office365Triggers(self)
         self.salesforce = SalesforceTriggers(self)
         self.sharepoint = SharePointTriggers(self)

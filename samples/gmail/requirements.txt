@@ -1,0 +1,5 @@
+# Install package from local path during development
+-e ../../
+
+# For production, install from git:
+# azure-functions-connectors @ git+https://github.com/anthonychu/azure-functions-connectors-python.git

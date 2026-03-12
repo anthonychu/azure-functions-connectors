@@ -6,10 +6,10 @@ Connector bindings for Azure Functions (Python). Poll Azure managed connectors f
 
 ## Features
 
-- **Typed connector support** — Office 365 (triggers + client), SharePoint (triggers + client), Salesforce (triggers + client), Teams (triggers + client)
+- **Typed connector support** — Office 365, SharePoint, Salesforce, Teams, Google Calendar (triggers + client), Gmail (client)
 - **Generic connector support** — `generic_trigger()` and `ConnectorClient` work with Azure managed connectors beyond the typed helpers
 - **Clients** — send emails, create events, manage contacts, query CRM records, and call connector actions
-- **Strongly-typed** — `Office365Email`, `Office365Event` models with snake_case properties + dict access
+- **Strongly-typed** — `Office365Email`, `GoogleCalendarEvent`, `TeamsMessage` models with snake_case properties + dict access
 - **Automatic scale-out** — items dispatched via Storage Queue for parallel processing
 - **Cursor-based polling** — only new items returned, no duplicates
 - **Exponential backoff** — fast when active, quiet when idle
@@ -19,7 +19,9 @@ Connector bindings for Azure Functions (Python). Poll Azure managed connectors f
 - **Office 365 Outlook** — typed polling triggers and typed client
 - **SharePoint Online** — typed polling triggers and typed client
 - **Salesforce** — typed polling triggers and typed client
-- **Microsoft Teams** — typed polling triggers and typed client
+- **Microsoft Teams** — typed triggers (action-based) and typed client
+- **Google Calendar** — typed triggers (action-based) and typed client
+- **Gmail** — typed client (no triggers available)
 - **Generic Azure managed connectors** — use `connectors.generic_trigger(...)` and `connectors.get_client(...)`
 
 ## Quick Start
@@ -177,15 +179,19 @@ No explicit registration call needed — `FunctionsConnectors(app)` handles ever
 ## Known Limitations
 
 - **Teams triggers** support top-level channel posts and @mentions. Replies within threads and chat message triggers are not currently available.
+- **Gmail** has no triggers and no list emails action — client supports send, reply, get, trash, and delete only.
+- **Google Calendar triggers** detect new/updated events but rely on action-based polling (the connector's native triggers are webhook-only).
 - **`http_request()` actions** on Office 365, Teams, and SharePoint connectors are not currently supported. Use the typed client methods or the Microsoft Graph SDK instead.
 - **SharePoint generic paths** require special site URL encoding; the typed `connectors.sharepoint.*` helpers handle this automatically.
 
 ## Documentation
 
 - **[Office 365 Connector](docs/office365.md)** — 7 triggers, 31 client methods, typed models (`Office365Email`, `Office365Event`)
-- **[Microsoft Teams Connector](docs/teams.md)** — typed triggers, typed client, typed models, and current Teams-specific limitations
-- **[SharePoint Connector](docs/sharepoint.md)** — 4 triggers, typed models, client helpers, SharePoint encoding notes
+- **[Microsoft Teams Connector](docs/teams.md)** — typed triggers, typed client, typed models
+- **[SharePoint Connector](docs/sharepoint.md)** — 4 triggers, typed models, client helpers
 - **[Salesforce Connector](docs/salesforce.md)** — 3 triggers, typed models, client helpers
+- **[Google Calendar Connector](docs/google-calendar.md)** — 2 triggers, typed client, typed models (`GoogleCalendarEvent`)
+- **[Gmail Connector](docs/gmail.md)** — typed client, typed models (`GmailEmail`)
 - **[Generic APIs](docs/generic.md)** — `generic_trigger()`, `ConnectorClient`, `ConnectorItem`, architecture, RBAC
 - **[Setup & Production Guide](docs/setup.md)** — Creating connections, authentication, RBAC, local dev, deployment
 
@@ -195,6 +201,8 @@ No explicit registration call needed — `FunctionsConnectors(app)` handles ever
 - [samples/sharepoint/](samples/sharepoint/) — SharePoint triggers + typed client
 - [samples/salesforce/](samples/salesforce/) — Salesforce triggers + typed client
 - [samples/teams/](samples/teams/) — Teams triggers + typed client
+- [samples/google-calendar/](samples/google-calendar/) — Google Calendar triggers + typed client
+- [samples/gmail/](samples/gmail/) — Gmail typed client
 
 ## License
 
