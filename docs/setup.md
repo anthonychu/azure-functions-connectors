@@ -185,8 +185,10 @@ For local development, you still need a real Azure API Connection (created in Az
 Use standard Azure Functions deployment. Install the package from `requirements.txt`:
 
 ```txt
-azure-functions-connectors @ git+https://github.com/anthonychu/azure-functions-connectors-python.git
+azure-functions-connectors @ https://github.com/anthonychu/azure-functions-connectors-python/releases/download/v0.1.0b1/azure_functions_connectors-0.1.0b1-py3-none-any.whl
 ```
+
+> **Tip:** Check the [Releases page](https://github.com/anthonychu/azure-functions-connectors-python/releases) for the latest version URL.
 
 ### Enable Managed Identity
 

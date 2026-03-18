@@ -1,0 +1,67 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_tag:
+        description: "Version tag for the release (e.g., v0.1.0b1)"
+        required: true
+        default: "v0.1.0b1"
+      prerelease:
+        description: "Mark as pre-release"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build dependencies
+        run: pip install build
+
+      - name: Build wheel
+        run: python -m build --wheel
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version_tag }}
+          name: "${{ github.event.inputs.version_tag }}"
+          body: |
+            ## azure-functions-connectors ${{ github.event.inputs.version_tag }} (Beta)
+
+            This is a beta pre-release of the `azure-functions-connectors` package, providing Azure managed connector bindings for Azure Functions.
+
+            ### Features
+            - Azure managed connector trigger and client bindings for Azure Functions
+            - Support for Gmail, Google Calendar, Office 365, Salesforce, SharePoint, and Teams connectors
+            - Built on azure-functions, azure-identity, azure-storage-blob, azure-storage-queue, and aiohttp
+
+            ### Installation
+
+            Download the `.whl` file from this release and install it with:
+
+            ```bash
+            pip install <downloaded-whl-filename>.whl
+            ```
+
+            > **Note:** This is a beta release intended for testing and evaluation. APIs may change before the stable release.
+          files: dist/*.whl
+          prerelease: ${{ github.event.inputs.prerelease == 'true' }}
+          generate_release_notes: false
