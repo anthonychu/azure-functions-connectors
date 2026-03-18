@@ -58,7 +58,7 @@ jobs:
             Download the `.whl` file from this release and install it with:
 
             ```bash
-            pip install azure_functions_connectors-0.1.0b1-py3-none-any.whl
+            pip install <downloaded-whl-filename>.whl
             ```
 
             > **Note:** This is a beta release intended for testing and evaluation. APIs may change before the stable release.
